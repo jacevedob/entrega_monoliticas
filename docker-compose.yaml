@@ -99,3 +99,23 @@ services:
       - ./connectors/pulsar:/pulsar/connectors
     command: bash -c "bin/apply-config-from-env.py conf/broker.conf
       &&  exec bin/pulsar broker"
+
+      # MySQL8
+  db_terceros:
+    image: mysql:8
+    hostname: mysqldb
+    container_name: mysqldb_terceros
+    cap_add:
+      - SYS_NICE
+    restart: always
+    environment:
+      - MYSQL_DATABASE=terceros
+      - MYSQL_ROOT_PASSWORD=adminadmin
+    profiles: ["aeroalpes", "db_terceros"]
+    networks:
+      - pulsar
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  
