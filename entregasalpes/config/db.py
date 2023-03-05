@@ -1,3 +1,4 @@
+import os
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 
@@ -14,13 +15,16 @@ class DatabaseConfigException(Exception):
 
 
 def database_connection(config, basedir=os.path.abspath(os.path.dirname(__file__))) -> str:
+    print('                                                ->',config)
+    if (config == None):
+        return f'mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}/ordenes'
     if not isinstance(config,dict):
         raise DatabaseConfigException
     
     if config.get('TESTING', False) == True:
         return f'sqlite:///{os.path.join(basedir, "database.db")}'
     else:
-        return f'mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}/reservas'
+        return f'mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}/ordenes'
 
 
 def init_db(app: Flask):

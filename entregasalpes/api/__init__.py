@@ -35,7 +35,7 @@ def create_app(configuracion=None):
     app = Flask(__name__, instance_relative_config=True)
 
     app.config['SESSION_TYPE'] = 'filesystem'
-    app.config['TESTING'] = configuracion.get('TESTING')
+    app.config['TESTING'] = 'TESTING' #configuracion.get('TESTING')
 
      # Inicializa la DB
     from entregasalpes.config.db import init_db, database_connection
@@ -62,13 +62,6 @@ def create_app(configuracion=None):
 
     # Registro de Blueprints
     app.register_blueprint(ordenes.bp)
-
-    @app.route("/spec")
-    def spec():
-        swag = swagger(app)
-        swag['info']['version'] = "1.0"
-        swag['info']['title'] = "My API"
-        return jsonify(swag)
 
     @app.route("/spec")
     def spec():

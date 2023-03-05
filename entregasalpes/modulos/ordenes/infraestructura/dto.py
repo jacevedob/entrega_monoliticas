@@ -5,9 +5,9 @@ Base = db.declarative_base()
 ordenes_productos = db.Table(
     "ordenes_productos",
     db.Model.metadata,
-    db.Column("orden_id", db.String, db.ForeignKey("ordenes.id")),
-    db.Column("serial", db.String),
-    db.Column("descripcion", db.String),
+    db.Column("orden_id", db.Integer, db.ForeignKey("ordenes.id")),
+    db.Column("serial", db.String(10)),
+    db.Column("descripcion", db.String(50)),
     db.Column("precio", db.Integer),
     db.ForeignKeyConstraint(
         [ "serial", "descripcion", "precio"],
@@ -19,13 +19,13 @@ class Producto(db.Model):
     serial = db.Column(db.String(10), nullable=False,primary_key=True)
     descripcion = db.Column(db.String(100),  nullable=False, primary_key=True)
     precio = db.Column(db.Integer, nullable=False, primary_key=True)
-    fecha_vencimiento = db.Column(db.String, nullable=False, primary_key=True)
+    fecha_vencimiento = db.Column(db.String(10), nullable=False, primary_key=True)
 
 class Orden(db.Model):
     __tablename__ = "ordenes"
-    id = db.Column(db.String, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     id_cliente = db.Column(db.Integer, nullable=False)
-    fecha_creacion = db.Column(db.String, nullable=False)
+    fecha_creacion = db.Column(db.String(10), nullable=False)
     productos = db.relationship('Producto', secondary=ordenes_productos, backref='ordenes')
 
 class EventosOrden(db.Model):

@@ -12,6 +12,6 @@ class CrearOrdenBaseHandler(ComandoHandler):
         return self._fabrica_repositorio
     
     @property
-    def fabrica_vuelos(self):
+    def fabrica_compras(self):
         return self._fabrica_ordenes
     

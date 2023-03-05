@@ -3,7 +3,7 @@ import json
 from entregasalpes.modulos.ordenes.aplicacion.servicios import ServicioOrden
 from entregasalpes.modulos.ordenes.aplicacion.dto import OrdenDTO
 from entregasalpes.seedwork.dominio.excepciones import ExcepcionDominio
-from entregasalpes.modulos.ordenes.aplicacion.comandos.crear_reserva import CrearOrden
+from entregasalpes.modulos.ordenes.aplicacion.comandos.crear_orden import CrearOrden
 
 from flask import redirect, render_template, request, session, url_for
 from flask import Response
@@ -23,9 +23,20 @@ def ordenar():
         orden_dto = map_orden.externo_a_dto(orden_dict)
 
         sr = ServicioOrden()
-        dto_final = sr.crear_orden(orden_dto)
+        print(orden_dto)
+        #dto_final = sr.crear_orden(orden_dto)
 
-        return map_orden.dto_a_externo(dto_final)
+
+        comando = CrearOrden(orden_dto.fecha_creacion, orden_dto.id_cliente, orden_dto.id, orden_dto.productos)
+        
+        # TODO Reemplaze es todo código sincrono y use el broker de eventos para propagar este comando de forma asíncrona
+        # Revise la clase Despachador de la capa de infraestructura
+        ejecutar_commando(comando)
+
+
+
+
+        return Response(json.dumps("Probando"), status=200, mimetype='application/json') #map_orden.dto_a_externo(dto_final)
     except ExcepcionDominio as e:
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
 
