@@ -13,18 +13,16 @@ services:
       - SYS_NICE
     restart: always
     environment:
-      - MYSQL_DATABASE = terceros
-      - MYSQL_ROOT_PASSWORD = adminadmin
+      - MYSQL_DATABASE=terceros
+      - MYSQL_ROOT_PASSWORD=adminadmin
     profiles: ["db_terceros"]
     networks:
       - pulsar
     ports:
-      - '3308:3306'
-    expose:
-      - 3308
+      - '3306:3306'
     volumes:
       - ./data/mysql:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init_terceros.sql  
+      - ./init_terceros.sql:/docker-entrypoint-initdb.d/init.sql
 
 #bodegas
   terceros:

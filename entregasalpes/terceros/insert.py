@@ -23,7 +23,7 @@ def insert_db():
 
   datos = sidecar.bodegas()
   mycursor = mydb.cursor()
-  sql = "INSERT INTO hoja_ruta (producto, cantidad, bodega_centro, id_orden ) VALUES (%s, %s, %s, %s)"
+  sql = "INSERT INTO hoja_ruta (producto, cantidad, bodega_centro, id_orden, id_bodega ) VALUES (%s, %s, %s, %s, %s)"
   #val = (datos['nombre'], datos['cantidad'], datos['descripcion'], datos['id_orden'])
   val = (datos[0], datos[1], datos[2], datos[3], datos[4])
   print(val)

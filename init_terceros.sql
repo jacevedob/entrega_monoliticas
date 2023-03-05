@@ -4,5 +4,5 @@ CREATE TABLE hoja_ruta(
     cantidad VARCHAR(255),
     bodega_centro VARCHAR(255),
     id_orden VARCHAR(255),
-    id_bodega VARCHAR(255),
+    id_bodega VARCHAR(255)
 ) COMMENT 'Tabla hoja de ruta';
