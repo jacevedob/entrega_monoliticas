@@ -14,7 +14,7 @@ class CrearOrden(Comando):
     fecha_creacion: str
     fecha_actualizacion: str
     id: str
-    itinerarios: list[ProductoDTO]
+    productos: list[ProductoDTO]
 
 
 class CrearOrdenHandler(CrearOrdenBaseHandler):
