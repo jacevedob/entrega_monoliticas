@@ -17,22 +17,6 @@ class ObjetoValor:
 class Codigo(ABC, ObjetoValor):
     codigo: str
 
-class Ruta(ABC, ObjetoValor):
-    @abstractmethod
-    def origen(self) -> Locacion:
-        ...
-    
-    @abstractmethod
-    def destino(self) -> Locacion:
-        ...
-    
-    @abstractmethod
-    def fecha_salida(self) -> datetime:
-        ...
-
-    @abstractmethod
-    def fecha_llegada(self) -> datetime:
-        ...
 
 @dataclass(frozen=True)
 class Pais(ObjetoValor):
