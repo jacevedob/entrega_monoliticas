@@ -132,7 +132,7 @@ services:
     environment:
       - MYSQL_DATABASE=ordenes
       - MYSQL_ROOT_PASSWORD=adminadmin
-    profiles: ["db_ordenes"]
+    profiles: ["doc"]
     networks:
       - pulsar
     ports:
