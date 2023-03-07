@@ -20,13 +20,18 @@ def comenzar_consumidor(app):
     """
 
     import threading
-    import entregasalpes.modulos.ordenes.infraestructura.consumidores as cliente    
+    import entregasalpes.modulos.ordenes.infraestructura.consumidores as ordenes    
+    import entregasalpes.modulos.unificacion_pedidos.infraestructura.consumidores as pedidos
 
     # Suscripción a eventos
-    threading.Thread(target=ordenes.suscribirse_a_eventos, args=[app]).start()
+    # threading.Thread(target=ordenes.suscribirse_a_eventos, args=[app]).start()
+
+
+    # Suscripción a eventos
+    threading.Thread(target=pedidos.suscribirse_a_eventos, args=[app]).start()
 
     # Suscripción a comandos
-    threading.Thread(target=ordenes.suscribirse_a_comandos, args=[app]).start()
+    # threading.Thread(target=ordenes.suscribirse_a_comandos, args=[app]).start()
 
 
 
@@ -51,6 +56,8 @@ def create_app(configuracion=None):
 
     importar_modelos_alchemy()
     registrar_handlers()
+
+    comenzar_consumidor(app)
 
     with app.app_context():
         db.create_all()
