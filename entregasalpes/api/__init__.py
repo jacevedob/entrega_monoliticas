@@ -61,8 +61,9 @@ def create_app(configuracion=None):
 
     with app.app_context():
         db.create_all()
-        if not app.config.get('TESTING'):
-            comenzar_consumidor(app)
+        #comenzar_consumidor(app)
+        #if not app.config.get('TESTING'):
+        #    comenzar_consumidor(app)
 
      # Importa Blueprints
     from . import ordenes

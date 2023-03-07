@@ -37,7 +37,6 @@ class CrearOrdenHandler(CrearOrdenBaseHandler):
         id: str = field(default_factory=str)
         productos: list[ProductoDTO] = field(default_factory=list)
         orden: Orden = self.fabrica_compras.crear_objeto(orden_dto, MapeadorOrden())
-        print('               handle                     - - - - - -  - - - -   - > ')
         load_dotenv()
         token = os.getenv('PULSAR_TOKEN')
         service_url = os.getenv('PULSAR_URL') 
