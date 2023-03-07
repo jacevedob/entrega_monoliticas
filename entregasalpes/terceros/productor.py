@@ -12,4 +12,4 @@ def send_topic(topic):
     producer.send((topic).encode('utf-8'))
     client.close()
 
-send_topic("Topico de prueba")
+send_topic("Topico de prueba manual")
