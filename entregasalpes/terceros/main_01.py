@@ -14,9 +14,10 @@ consumer = client.subscribe(pulsar_consumer, 'test-subscription', ConsumerType.S
 
 while True:
     msg = consumer.receive()
+    topic = (str(msg.data())[2:-1])
     print(msg.data())
-    insert.insert_db()
-    productor.send_topic('enviar_recogida')
+    #insert.insert_db()
+    productor_01.send_topic(topic)
     consumer.acknowledge(msg)
 
 client.close()
