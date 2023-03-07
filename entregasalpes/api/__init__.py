@@ -20,7 +20,7 @@ def comenzar_consumidor(app):
     """
 
     import threading
-    import entregasalpes.modulos.ordenes.infraestructura.consumidores as cliente    
+    import entregasalpes.modulos.ordenes.infraestructura.consumidores as ordenes    
 
     # Suscripción a eventos
     threading.Thread(target=ordenes.suscribirse_a_eventos, args=[app]).start()
@@ -54,8 +54,9 @@ def create_app(configuracion=None):
 
     with app.app_context():
         db.create_all()
-        if not app.config.get('TESTING'):
-            comenzar_consumidor(app)
+        #comenzar_consumidor(app)
+        #if not app.config.get('TESTING'):
+        #    comenzar_consumidor(app)
 
      # Importa Blueprints
     from . import ordenes

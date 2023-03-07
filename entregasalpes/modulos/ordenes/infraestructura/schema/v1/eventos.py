@@ -20,7 +20,7 @@ class EventoOrdenCreada(EventoIntegracion):
     type = String()
     datacontenttype = String()
     service_name = String()
-    data = ReservaCreadaPayload()
+    data = OrdenCreadaPayload()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

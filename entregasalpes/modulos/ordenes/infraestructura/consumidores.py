@@ -5,6 +5,8 @@ import time
 import logging
 import traceback
 import datetime
+import os
+from dotenv import load_dotenv
 
 from entregasalpes.modulos.ordenes.infraestructura.schema.v1.eventos import EventoOrdenCreada
 from entregasalpes.modulos.ordenes.infraestructura.schema.v1.comandos import ComandoCrearOrden
@@ -14,23 +16,44 @@ from entregasalpes.seedwork.infraestructura.proyecciones import ejecutar_proyecc
 from entregasalpes.seedwork.infraestructura import utils
 
 def suscribirse_a_eventos(app=None):
+    print('- - -- - - -  suscribirse_a_eventos                         ----- >')
     cliente = None
     try:
-        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('eventos-ordenes', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='entregasalpes-sub-eventos', schema=AvroSchema(EventoOrdenCreada))
 
+        load_dotenv()
+        token = os.getenv('PULSAR_TOKEN')
+        service_url = os.getenv('PULSAR_URL') 
+        pulsar_consumer = os.getenv('PULSAR_PROD_ORDENES') 
+        client = pulsar.Client(service_url, authentication=pulsar.AuthenticationToken(token))
+        consumer = client.subscribe(pulsar_consumer, 'test-subscription')
         while True:
-            mensaje = consumidor.receive()
-            datos = mensaje.value().data
-            print(f'Evento recibido: {datos}')
+            msg = consumer.receive()
+            print("MENSAJE suscribirse_a_eventos ",msg.data())
+            #topic = (str(msg.data())[2:-1])
 
-            # TODO Identificar el tipo de CRUD del evento: Creacion, actualización o eliminación.
-            #ejecutar_proyeccion(ProyeccionReservasTotales(datos.fecha_creacion, ProyeccionReservasTotales.ADD), app=app)
-            #ejecutar_proyeccion(ProyeccionReservasLista(datos.id_reserva, datos.id_cliente, datos.estado, datos.fecha_creacion, datos.fecha_creacion), app=app)
-            
-            consumidor.acknowledge(mensaje)     
+            #if topic == "insertar":
+            #    insert.insert_db()
+            #    productor.send_topic('enviar_recogida')
+            consumer.acknowledge(msg)
 
-        cliente.close()
+        client.close()
+
+
+        #cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+        #consumidor = cliente.subscribe('eventos-ordenes', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='entregasalpes-sub-eventos', schema=AvroSchema(EventoOrdenCreada))
+#
+        #while True:
+        #    mensaje = consumidor.receive()
+        #    datos = mensaje.value().data
+        #    print(f'Evento recibido: {datos}')
+#
+        #    # TODO Identificar el tipo de CRUD del evento: Creacion, actualización o eliminación.
+        #    #ejecutar_proyeccion(ProyeccionReservasTotales(datos.fecha_creacion, ProyeccionReservasTotales.ADD), app=app)
+        #    #ejecutar_proyeccion(ProyeccionReservasLista(datos.id_reserva, datos.id_cliente, datos.estado, datos.fecha_creacion, datos.fecha_creacion), app=app)
+        #    
+        #    consumidor.acknowledge(mensaje)     
+#
+        #cliente.close()
     except:
         logging.error('ERROR: Suscribiendose al tópico de eventos!')
         traceback.print_exc()
@@ -38,20 +61,47 @@ def suscribirse_a_eventos(app=None):
             cliente.close()
 
 def suscribirse_a_comandos(app=None):
+    print('- - -- - - -  suscribirse_a_comandos                         ----- >')
+
     cliente = None
+
     try:
-        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comandos-orden', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='entregasalpes-sub-comandos', schema=AvroSchema(ComandoCrearOrden))
-
+        load_dotenv()
+        token = os.getenv('PULSAR_TOKEN')
+        service_url = os.getenv('PULSAR_URL') 
+        pulsar_consumer = os.getenv('PULSAR_PROD_ORDENES') 
+        client = pulsar.Client(service_url, authentication=pulsar.AuthenticationToken(token))
+        consumer = client.subscribe(pulsar_consumer, 'test-subscription')
         while True:
-            mensaje = consumidor.receive()
-            print(f'Comando recibido: {mensaje.value().data}')
+            msg = consumer.receive()
+            print("MENSAJE suscribirse_a_comandos ",msg.data())
+            #topic = (str(msg.data())[2:-1])
 
-            consumidor.acknowledge(mensaje)     
-            
-        cliente.close()
+            #if topic == "insertar":
+            #    insert.insert_db()
+            #    productor.send_topic('enviar_recogida')
+            consumer.acknowledge(msg)
+
+        client.close()
+
     except:
         logging.error('ERROR: Suscribiendose al tópico de comandos!')
         traceback.print_exc()
-        if cliente:
-            cliente.close()
+        if client:
+            client.close()
+   #try:
+   #    cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+   #    consumidor = cliente.subscribe('comandos-orden', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='entregasalpes-sub-comandos', schema=AvroSchema(ComandoCrearOrden))
+
+   #    while True:
+   #        mensaje = consumidor.receive()
+   #        print(f'Comando recibido: {mensaje.value().data}')
+
+   #        consumidor.acknowledge(mensaje)     
+   #        
+   #    cliente.close()
+   #except:
+   #    logging.error('ERROR: Suscribiendose al tópico de comandos!')
+   #    traceback.print_exc()
+   #    if cliente:
+   #        cliente.close()
