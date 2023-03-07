@@ -111,7 +111,7 @@ services:
     environment:
       - MYSQL_DATABASE=terceros
       - MYSQL_ROOT_PASSWORD=adminadmin
-    profiles: ["aeroalpes", "db_terceros"]
+    profiles: ["db_terceros"]
     networks:
       - pulsar
     ports:
@@ -132,7 +132,7 @@ services:
     environment:
       - MYSQL_DATABASE=ordenes
       - MYSQL_ROOT_PASSWORD=adminadmin
-    profiles: ["doc"]
+    profiles: ["db_ordenes"]
     networks:
       - pulsar
     ports:
