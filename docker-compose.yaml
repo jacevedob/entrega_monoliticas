@@ -111,7 +111,7 @@ services:
     environment:
       - MYSQL_DATABASE=terceros
       - MYSQL_ROOT_PASSWORD=adminadmin
-    profiles: ["aeroalpes", "db_terceros"]
+    profiles: ["db_terceros"]
     networks:
       - pulsar
     ports:
@@ -132,11 +132,31 @@ services:
     environment:
       - MYSQL_DATABASE=ordenes
       - MYSQL_ROOT_PASSWORD=adminadmin
-    profiles: ["doc"]
+    profiles: ["db_ordenes"]
     networks:
       - pulsar
     ports:
-      - '3306:3306'
+      - '3307:3307'
     volumes:
       - ./data/mysql:/var/lib/mysql
       - ./init-orden.sql:/docker-entrypoint-initdb.d/init.sql        
+
+    # MySQL8
+  db_pedidos:
+     image: mysql:8
+     hostname: mysqldb
+     container_name: mysqldb_pedidos
+     cap_add:
+        - SYS_NICE
+     restart: always
+     environment:
+            - MYSQL_DATABASE=pedidos
+            - MYSQL_ROOT_PASSWORD=adminadmin
+     profiles: [ "db_pedidos" ]
+     networks:
+        - pulsar
+     ports:
+        - '3306:3306'
+     volumes:
+        - ./data/mysql:/var/lib/mysql
+        - ./init-pedidos.sql:/docker-entrypoint-initdb.d/init.sql
