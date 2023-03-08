@@ -31,14 +31,14 @@ def database_connection(config, basedir=os.path.abspath(os.path.dirname(__file__
 def database_connection_pedidos(config, basedir=os.path.abspath(os.path.dirname(__file__))) -> str:
     if (config == None):
         print('                                  asdas a              ->   ',config)
-        return f'mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}/{DB_PEDIDOS}'
+        return f'mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}/{DB_DATABASE_PEDIDOS}'
     if not isinstance(config,dict):
         raise DatabaseConfigException
     
     if config.get('TESTING', False) == True:
         return f'sqlite:///{os.path.join(basedir, "database.db")}'
     else:
-        return f'mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}/{DB_PEDIDOS}'
+        return f'mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}/{DB_DATABASE_PEDIDOS}'
 
 
 def init_db(app: Flask):

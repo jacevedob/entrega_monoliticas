@@ -68,7 +68,7 @@ class RepositorioOrdenesSQLAlchemy(RepositorioOrdenes):
         print (" - - - -- - - -agregar - -RepositorioOrdenesSQLAlchemy- -  - >")
         orden_dto = self.fabrica_compras.crear_objeto(orden, MapeadorOrden())
         print (" - - - -- - - -agregar - - orden - -  - >", orden_dto)
-        db.session.add(orden_dto)
+        #db.session.add(orden_dto)
 
         #orden_dto = self.fabrica_ordenes.crear_objeto(orden, MapeadorOrden())
         #db.session.add(orden_dto)
