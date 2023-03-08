@@ -30,7 +30,12 @@ Para lograr lo anterior, planteamos la siguiente arquitectura modelo para llevar
 
 Además seguimos los siguientes lineamientos. 
 1. Para este ejercicio seguimos los principios de microservicios basados en eventos. Por tal motivo la comunicación entre los servicios **se realizó usando comandos y eventos **
-2. Definimos los eventos de acuerdo a los escenarios de calidad a satisfacer en este caso usamos eventos de integración. Adicionalmente diseñamos el esquema en formato **Json** y usamos el sistema de versionamiento que nos provee el broker de pulsar en su estrategía **Full compatibilty ** ,
+2. Definimos los eventos de acuerdo a los escenarios de calidad a satisfacer en este caso usamos eventos de integración. Adicionalmente diseñamos el esquema en formato **Json** por su compatibilidad y usamos el sistema de versionamiento que nos provee el broker de pulsar en su estrategía **Full compatibilty**.
+3. Definimos eventos de tipo **Integración**, Debido a la experimentación y que los eventos de este caso de uso son idempotentes, eventos gordos no nos favorecia para este experimento. 
+4. Usamos el sistema de broker de eventos **Apache Pulsar** y el servicio **Data Stax** Para su administración
+5. El desarrollo de estos microservicios utilizan comandos, consultas y eventos.
+6. Usamos patrones y tácticas de almacenado de datos de tipo **descentralizado**, para evitar el acoplamiento
+7. Usamos el patrón **CRUD** para todos los servicios para el almacenamiento, esto debido 
 
 
 ## Intrucciones de ejecución del proyecto
