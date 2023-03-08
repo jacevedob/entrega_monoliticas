@@ -40,7 +40,7 @@ Además seguimos los siguientes lineamientos.
 
 ## Intrucciones de ejecución del proyecto
 1. Clonar repositorio
-2. Agregar al repositorio el archivo .env, enviado al canal de slack y al correo del tutor.
+2. Agregar al repositorio el archivo .env, adjuntos en el archivo del entregable.
 
 3. Iniciar las bases de datos
 
