@@ -1,0 +1,8 @@
+FROM python:3.10
+
+COPY terceros-requirements.txt ./
+RUN pip install --no-cache-dir -r terceros-requirements.txt
+
+COPY . .
+
+CMD [ "python", "./entregasalpes/terceros/main.py" ]

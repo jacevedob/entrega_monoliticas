@@ -2,108 +2,12 @@ version: '3'
 networks:
   pulsar:
     driver: bridge
-  sidecar:
-    driver: bridge
 services:
-# Start zookeeper
-  zookeeper:
-    image: apachepulsar/pulsar:latest
-    profiles: ["pulsar"]
-    container_name: zookeeper
-    restart: on-failure
-    networks:
-      - pulsar
-    volumes:
-      - ./data/zookeeper:/pulsar/data/zookeeper
-    environment:
-      - metadataStoreUrl=zk:zookeeper:2181
-    command: >
-      bash -c "bin/apply-config-from-env.py conf/zookeeper.conf && \
-             bin/generate-zookeeper-config.sh conf/zookeeper.conf && \
-             exec bin/pulsar zookeeper"
-    healthcheck:
-      test: ["CMD", "bin/pulsar-zookeeper-ruok.sh"]
-      interval: 10s
-      timeout: 5s
-      retries: 30
 
-# Init cluster metadata
-  pulsar-init:
-    container_name: pulsar-init
-    hostname: pulsar-init
-    image: apachepulsar/pulsar:latest
-    profiles: ["pulsar"]
-    networks:
-      - pulsar
-    command: >
-      bin/pulsar initialize-cluster-metadata \
-               --cluster cluster-a \
-               --zookeeper zookeeper:2181 \
-               --configuration-store zookeeper:2181 \
-               --web-service-url http://broker:8080 \
-               --broker-service-url pulsar://broker:6650
-    depends_on:
-      zookeeper:
-        condition: service_healthy
-
-# Start bookie
-  bookie:
-    image: apachepulsar/pulsar:latest
-    profiles: ["pulsar"]
-    container_name: bookie
-    restart: on-failure
-    networks:
-      - pulsar
-    environment:
-      - clusterName=cluster-a
-      - zkServers=zookeeper:2181
-      - metadataServiceUri=metadata-store:zk:zookeeper:2181
-    depends_on:
-      zookeeper:
-        condition: service_healthy
-      pulsar-init:
-        condition: service_completed_successfully
-  # Map the local directory to the container to avoid bookie startup failure due to insufficient container disks.
-    volumes:
-      - ./data/bookkeeper:/pulsar/data/bookkeeper
-    command: bash -c "bin/apply-config-from-env.py conf/bookkeeper.conf
-      && exec bin/pulsar bookie"
-
-# Start broker
-  broker:
-    image: apachepulsar/pulsar:latest
-    profiles: ["pulsar"]
-    container_name: broker
-    hostname: broker
-    restart: on-failure
-    networks:
-      - pulsar
-    environment:
-      - metadataStoreUrl=zk:zookeeper:2181
-      - zookeeperServers=zookeeper:2181
-      - clusterName=cluster-a
-      - managedLedgerDefaultEnsembleSize=1
-      - managedLedgerDefaultWriteQuorum=1
-      - managedLedgerDefaultAckQuorum=1
-      - advertisedAddress=broker
-      - advertisedListeners=external:pulsar://127.0.0.1:6650
-    depends_on:
-      zookeeper:
-        condition: service_healthy
-      bookie:
-        condition: service_started
-    ports:
-      - "6650:6650"
-      - "8080:8080"
-    volumes:
-      - ./connectors/pulsar:/pulsar/connectors
-    command: bash -c "bin/apply-config-from-env.py conf/broker.conf
-      &&  exec bin/pulsar broker"
-
-      # MySQL8
+  # MySQL8
   db_terceros:
     image: mysql:8
-    hostname: mysqldb
+    hostname: mysqldb_terceros
     container_name: mysqldb_terceros
     cap_add:
       - SYS_NICE
@@ -115,48 +19,27 @@ services:
     networks:
       - pulsar
     ports:
-      - '3306:3306'
+      - '3307:3306'
+    expose:
+      - 3307
     volumes:
       - ./data/mysql:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  
+      - ./init_terceros.sql:/docker-entrypoint-initdb.d/init.sql
 
-
-      # MySQL8
-  db_ordenes:
-    image: mysql:8
-    hostname: mysqldb
-    container_name: mysqldb_ordenes
-    cap_add:
-      - SYS_NICE
-    restart: always
+#bodegas
+  terceros:
+    container_name: bodegas
+    hostname: bodegas
+    image: bodegas 
+    profiles: ["bodegas"]
     environment:
-      - MYSQL_DATABASE=ordenes
-      - MYSQL_ROOT_PASSWORD=adminadmin
-    profiles: ["db_ordenes"]
+      - PULSAR_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Nzc4OTAzODQsImlzcyI6ImRhdGFzdGF4Iiwic3ViIjoiY2xpZW50O2RjNTk2NmQxLTgxMWUtNDhjNi1hYTlkLThmYzdjNzI1ZjYyZTtaWGh3WlhKcGJXVnVkRzl6TFcxdmJtOXNhWFJwWTI5ejsxZmIzYWEzOGQ1IiwidG9rZW5pZCI6IjFmYjNhYTM4ZDUifQ.jtRQfeQxyDH1Bp84WSPmtsSpqnl0cZjl2nkigqzIMgy_H-qALSAd-Uci79aaeUhagQYIeuNf5z8WJ2OMoA-Xzk3x3JMw3eAOcnFeE6WEODqgtjHdhlScAgM2WBZYCYM3D9dJMTBxdHGYYmQ8stkk9qpv3z3K-2YySzI_xIUa6pn1Mt4htZ1bTPtPyXCWm6JjFHmgbnHgkgtD2PAW00mnBGjgMc6anJ_ac7qup44khF4bA5-spee-jC6SEqfJ-mQl7uwcVrBrcOh8FXI-KXff91tNsTYWp9jaTCuj1l8RCK6LAAtWKi5NwC33Y-xqjCgdi4PPD_QWy07PWSZr0iWEfA'
+      - PULSAR_URL = 'pulsar+ssl://pulsar-aws-useast2.streaming.datastax.com:6651'
+      - PULSAR_CONSUMER = 'persistent://experimentos-monoliticos/monoliticas/ordenes'
+      - PULSAR_PRODUCER = 'persistent://experimentos-monoliticos/monoliticas/eventos-pedidos'
+      - BODEGAS_ADDRESS = 'mysqldb_terceros'
+      - USER_DB = 'root'
+      - PASSWORD_DB = 'adminadmin'
+      - DATABASE = 'terceros'
     networks:
       - pulsar
-    ports:
-      - '3307:3307'
-    volumes:
-      - ./data/mysql:/var/lib/mysql
-      - ./init-orden.sql:/docker-entrypoint-initdb.d/init.sql        
-
-    # MySQL8
-  db_pedidos:
-     image: mysql:8
-     hostname: mysqldb
-     container_name: mysqldb_pedidos
-     cap_add:
-        - SYS_NICE
-     restart: always
-     environment:
-            - MYSQL_DATABASE=pedidos
-            - MYSQL_ROOT_PASSWORD=adminadmin
-     profiles: [ "db_pedidos" ]
-     networks:
-        - pulsar
-     ports:
-        - '3306:3306'
-     volumes:
-        - ./data/mysql:/var/lib/mysql
-        - ./init-pedidos.sql:/docker-entrypoint-initdb.d/init.sql
