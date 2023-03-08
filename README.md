@@ -68,7 +68,6 @@ A continuación se describe por integrante el aporte individual y como contribuy
 - Construcción lógica de creación de hoja de rutas.
 - Construcción base de datos de microservicio de almacenamiento terceros.
 - Gestión de subscripciones del broker.
-- 
 
 ## Comandos útiles
 
