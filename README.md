@@ -3,10 +3,24 @@ A continuación presentamos la entrega parcial o Entrega #4.
 
 En esta entrega presentamos 3 microservicios con comunicación asincrona ( comandos y eventos) usando Apache Pulsar y usando un modelo clásico **CRUD**  para las bases de datos. 
 
-El proposito de este es que los ingenieros puedan apreciar una prueba de concepto de la arquitectura solución para el proyecto Entrega Alpes, por medio de la validación de 3 escenarios de calidad para cada atributo de calidad en este caso ( Disponibilidad, Interoperabilidad, Escalabilidad), a continuación se describen., a continuación se describen.
+El proposito de este es que los ingenieros puedan apreciar una prueba de concepto de la arquitectura solución para el proyecto Entrega Alpes, por medio de la validación de 3 escenarios de calidad para cada atributo de calidad en este caso ( Disponibilidad, Interoperabilidad, Escalabilidad).
 
-Escenario de calidad.
-Atributo de calidad.
+### Disponibilidad
+
+![image](https://user-images.githubusercontent.com/78766013/223620518-609538bb-f69f-479e-93ab-24d639a36716.png)
+
+
+### Interoperabilidad
+
+![image](https://user-images.githubusercontent.com/78766013/223620560-cb7b4ad2-63df-4cdb-b053-9592237532e3.png)
+
+
+### Escalabilidad
+
+![image](https://user-images.githubusercontent.com/78766013/223620584-817fb7d0-b346-4b26-bbac-4ac1f8bd2603.png)
+
+
+
 
 Para lograr lo anterior, planteamos la siguiente arquitectura modelo para llevar a cabo el objetivo.
 
@@ -27,11 +41,21 @@ Además seguimos los siguientes lineamientos.
 
 ![image](https://user-images.githubusercontent.com/78766013/223617903-72ab9da0-765a-4c71-9175-e306e9f3893f.png)
 
-3. Iniciar servicios 
+4. Construcción de imagen del docker compose
 
-![image](https://user-images.githubusercontent.com/78766013/223617965-5a85051d-9ca5-4467-a8a7-9af1171db072.png)
+
+![image](https://user-images.githubusercontent.com/78766013/223620785-f57d7f75-961b-4c85-838a-fc06ed59b732.png)
+
+
+5. Iniciar servicios 
+
+
+![image](https://user-images.githubusercontent.com/78766013/223620743-496fb964-7832-4224-a264-4dd79b9022de.png)
+
 
 6. Enviar mensaje para inicio del flujo
+
+
 ![image](https://user-images.githubusercontent.com/78766013/223618174-95d220dc-e5f1-4ac0-8671-a68b7dab5ee2.png)
 
 
