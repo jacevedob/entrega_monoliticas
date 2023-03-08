@@ -3,12 +3,14 @@ A continuación presentamos la entrega parcial o Entrega #4.
 
 En esta entrega presentamos 3 microservicios con comunicación asincrona ( comandos y eventos) usando Apache Pulsar y usando un modelo clásico **CRUD**  para las bases de datos. 
 
-El proposito de este es que los ingenieros puedan aprciar una prueba de concepto de la arquitectura solución para el proyecto Entrega Alpes, por medio de la validación de 3 escenarios de calidad para cada atributo de calidad, a continuación se describen.
+El proposito de este es que los ingenieros puedan aprciar una prueba de concepto de la arquitectura solución para el proyecto Entrega Alpes, por medio de la validación de 3 escenarios de calidad para cada atributo de calidad en este caso ( Disponibilidad, Interoperabilidad, Escalabilidad), a continuación se describen., a continuación se describen.
 
 Escenario de calidad.
 Atributo de calidad.
 
 Para lograr lo anterior, planteamos la siguiente arquitectura modelo para llevar a cabo el objetivo.
+
+![image](https://user-images.githubusercontent.com/78766013/223618412-346bb8fc-3f1d-44b3-9525-28c5d604d73c.png)
 
 
 ¨¨¨
@@ -21,10 +23,17 @@ Además seguimos los siguientes lineamientos.
 ## Intrucciones de ejecución del proyecto
 1. Clonar repositorio
 2. Agregar al repositorio el archivo .env, enviado al canal de slack y al correo del tutor.
-3. Iniciar servicio A con el comando
-4. Iniciar servicio B con el comando 
-5. Iniciar servicio C con el comando
+
+3. Iniciar las bases de datos
+
+![image](https://user-images.githubusercontent.com/78766013/223617903-72ab9da0-765a-4c71-9175-e306e9f3893f.png)
+
+3. Iniciar servicios 
+
+![image](https://user-images.githubusercontent.com/78766013/223617965-5a85051d-9ca5-4467-a8a7-9af1171db072.png)
+
 6. Enviar mensaje para inicio del flujo
+![image](https://user-images.githubusercontent.com/78766013/223618174-95d220dc-e5f1-4ac0-8671-a68b7dab5ee2.png)
 
 
 
