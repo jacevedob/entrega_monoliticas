@@ -3,6 +3,7 @@ from entregasalpes.modulos.ordenes.aplicacion.dto import ProductoDTO, OrdenDTO
 from .base import CrearOrdenBaseHandler
 from dataclasses import dataclass, field
 from entregasalpes.seedwork.aplicacion.comandos import ejecutar_commando as comando
+from entregasalpes.modulos.ordenes.aplicacion.servicios import ServicioOrden
 
 from entregasalpes.modulos.ordenes.dominio.entidades import Orden
 from entregasalpes.seedwork.infraestructura.uow import UnidadTrabajoPuerto
@@ -24,8 +25,8 @@ class CrearOrden(Comando):
 class CrearOrdenHandler(CrearOrdenBaseHandler):
     
     def handle(self, comando: CrearOrden):
-        
-    
+        print ("- -- -- - -handle- -- crear agregar ")
+
         orden_dto = OrdenDTO(
                 id_cliente=comando.id_cliente
             ,   fecha_creacion=comando.fecha_creacion
@@ -47,21 +48,31 @@ class CrearOrdenHandler(CrearOrdenBaseHandler):
         
         producer.send((str(orden)).encode('utf-8'))
         client.close() 
+
+        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioOrdenes)
+        repositorio_eventos = self.fabrica_repositorio.crear_objeto(RepositorioEventosOrdenes)
+        #print ("- -- -- - -- -- crear orden ")
+        #sr = ServicioOrden()
+        #dto_final = sr.crear_orden(orden_dto)
+        #print ("        - -- -- - -- -descues - - -- -- - -- -- crear orden ")
+        #return map_orden.dto_a_externo(orden_dto)        
+        UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, orden_dto, repositorio_eventos_func=repositorio_eventos.agregar)
+        UnidadTrabajoPuerto.commit()
+
         #send_topic(orden_dto)
 
-    #orden: Orden = self.fabrica_compras.crear_objeto(orden_dto, MapeadorOrden())
-    #orden.crear_orden(orden)
+        #orden: Orden = self.fabrica_compras.crear_objeto(orden_dto, MapeadorOrden())
+        #orden.crear_orden(orden)
 
-    #repositorio = self.fabrica_repositorio.crear_objeto(RepositorioOrdenes)
-    #repositorio_eventos = self.fabrica_repositorio.crear_objeto(RepositorioEventosOrdenes)
+        
 
-    #UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, orden, repositorio_eventos_func=repositorio_eventos.agregar)
-    #UnidadTrabajoPuerto.commit()
+        #UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, orden, repositorio_eventos_func=repositorio_eventos.agregar)
+        #UnidadTrabajoPuerto.commit()
 
 
 
 @comando.register(CrearOrden)
-def ejecutar_comando_crear_reserva(comando: CrearOrden):
+def ejecutar_comando_crear_orden(comando: CrearOrden):
     
     handler = CrearOrdenHandler()
     handler.handle(comando)

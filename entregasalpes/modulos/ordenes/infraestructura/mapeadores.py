@@ -31,13 +31,14 @@ class MapeadorOrden(Mapeador):
         orden_dto.id = str(entidad.id)
 
         productos_dto = list()
-        
+        print("                                       lista -------> ", productos_dto)
         for producto in entidad.productos:
+            print(" sssssssss                           uno --------------------------> ", producto.serial)
             producto_dto = ProductoDTO()
-            producto_dto.serial = producto.serial
-            producto_dto.precio = producto.precio
-            producto_dto.fecha_vencimiento= producto.fecha_vencimiento
-            producto_dto.descripcion = producto.descripcion
+            producto_dto.serial = producto[0].serial
+            producto_dto.precio = producto[0].precio
+            producto_dto.fecha_vencimiento= producto[0].fecha_vencimiento
+            producto_dto.descripcion = producto[0].descripcion
             productos_dto.append(producto_dto)
 
         orden_dto.productos = productos_dto
@@ -50,21 +51,31 @@ class MapeadorOrden(Mapeador):
 
         productos_dto: list[ProductoDTO] = dto.productos
 
-        orden.productos.extend(self._procesar_producto_dto(productos_dto))
+        for product in productos_dto:
+            print(' Procesa producto dto                 ---dto_a_entidad - -                     ->', product[0])
+            serial = product[0].serial
+            tipo_producto = 'product.tipo_producto'
+            precio = product[0].precio
+            descripcion = product[0].descripcion
+            fecha_vencimiento = product[0].fecha_vencimiento
+            orden.productos.append(Producto(serial, descripcion, precio, fecha_vencimiento))
+        
 
         return orden
 
     def _procesar_producto_dto(self, productos_dto: list) -> list[Producto]:
         prod_dict = dict()
+        print(' Procesa producto dto     longitud            --- - -                     ->', len(productos_dto))
 
         for product in productos_dto:
-            print(' sdjfslkdj fsdjf s                 --- - -                     ->', product)
+            print(' Procesa producto dto                 --- - -                     ->', product)
             serial = product.serial
             tipo_producto = 'product.tipo_producto'
             precio = product.precio
             descripcion = product.descripcion
             fecha_vencimiento = product.fecha_vencimiento
             prod_dict.setdefault( Producto(serial, descripcion, precio, fecha_vencimiento))
+            print(' Procesa producto dto     longitud            --- - -                     ->',prod_dict)
 
         return [Producto]
 

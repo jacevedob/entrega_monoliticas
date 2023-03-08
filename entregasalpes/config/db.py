@@ -1,6 +1,6 @@
-import os
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
+import os
 
 db = None
 
@@ -15,8 +15,8 @@ class DatabaseConfigException(Exception):
 
 
 def database_connection(config, basedir=os.path.abspath(os.path.dirname(__file__))) -> str:
-    print('                                                ->',config)
     if (config == None):
+        print('                                  asdas a              ->   ',config)
         return f'mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}/ordenes'
     if not isinstance(config,dict):
         raise DatabaseConfigException

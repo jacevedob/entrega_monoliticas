@@ -22,8 +22,8 @@ def ordenar():
         map_orden = MapeadorOrdenDTOJson()
         orden_dto = map_orden.externo_a_dto(orden_dict)
 
-        sr = ServicioOrden()
-        print(orden_dto)
+        #sr = ServicioOrden()
+        #print(orden_dto)
         #dto_final = sr.crear_orden(orden_dto)
 
 

@@ -1,5 +1,8 @@
 from entregasalpes.config.db import db
+from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy import Column, ForeignKey, Integer, Table
 
+print ('                         - --- su db', db)
 Base = db.declarative_base()
 
 ordenes_productos = db.Table(

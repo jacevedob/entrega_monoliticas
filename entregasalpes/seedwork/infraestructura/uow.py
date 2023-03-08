@@ -102,7 +102,6 @@ def is_flask():
 def registrar_unidad_de_trabajo(serialized_obj):
     from entregasalpes.config.uow import UnidadTrabajoSQLAlchemy
     from flask import session
-    
 
     session['uow'] = serialized_obj
 

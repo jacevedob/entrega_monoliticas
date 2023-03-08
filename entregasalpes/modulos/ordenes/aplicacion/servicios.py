@@ -22,6 +22,7 @@ class ServicioOrden(Servicio):
         return self._fabrica_ordenes
 
     def crear_orden(self, orden_dto: OrdenDTO) -> OrdenDTO:
+        print ("- -- -- - -- -- crear orden Servicios ")
         orden: Orden = self.fabrica_ordenes.crear_objeto(orden_dto, MapeadorOrden())
 
         repositorio = self.fabrica_repositorio.crear_objeto(RepositorioOrdenes.__class__)

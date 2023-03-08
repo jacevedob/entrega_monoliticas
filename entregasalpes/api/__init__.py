@@ -33,7 +33,7 @@ def comenzar_consumidor(app):
 def create_app(configuracion=None):
     # Init la aplicacion de Flask
     app = Flask(__name__, instance_relative_config=True)
-
+    app.secret_key = '9d58f98f-3ae8-4149-a09f-3a8c2012e32c'
     app.config['SESSION_TYPE'] = 'filesystem'
     app.config['TESTING'] = 'TESTING' #configuracion.get('TESTING')
 
@@ -42,12 +42,11 @@ def create_app(configuracion=None):
 
     app.config['SQLALCHEMY_DATABASE_URI'] = database_connection(configuracion, basedir=basedir)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+    
     init_db(app)
 
      # Inicializa la DB
     from entregasalpes.config.db import db
-
 
     importar_modelos_alchemy()
     registrar_handlers()
