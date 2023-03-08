@@ -1,263 +1,66 @@
-# Entrega Monoliticas
+# Entrega #4
+A continuación presentamos la entrega parcial o Entrega #4.
 
-Repositorio con código base con la implementación de un servicio usando el patrón Event Sourcing.
+En esta entrega presentamos 3 microservicios con comunicación asincrona ( comandos y eventos) usando Apache Pulsar y usando un modelo clásico **CRUD**  para las bases de datos. 
 
-Este repositorio está basado en el repositorio de liberación de datos visto en el tutorial 6 del curso. Por tal motivo, puede usar ese mismo repositorio para entender algunos detalles que este README no cubre.
+El proposito de este es que los ingenieros puedan aprciar una prueba de concepto de la arquitectura solución para el proyecto Entrega Alpes, por medio de la validación de 3 escenarios de calidad para cada atributo de calidad, a continuación se describen.
 
-## Estructura del proyecto
+Escenario de calidad.
+Atributo de calidad.
 
-Este repositorio sigue en general la misma estructura del repositorio de origen. Sin embargo, hay un par de adiciones importante mencionar:
+Para lograr lo anterior, planteamos la siguiente arquitectura modelo para llevar a cabo el objetivo.
 
-- El archivo **src/aeroalpes/config/uow.py** ahora incluye una unidad de trabajo para Pulsar, esta nos va ayudar a mantener la consistencia transaccional en el servicio usando Apache Pulsar como nuestro Event Store.
-- El archivo **src/aeroalpes/modulos/vuelos/infraestructura/proyecciones.py** cuenta con las diferentes formas en que podemos hacer proyección de nuestros datos. Una de las proyecciones tiene propósitos analíticos y la otra transaccionales.
-- El archivo **src/aeroalpes/modulos/vuelos/infraestructura/vistas.py** cuenta con el modelo de vistas que podemos exponer a nuestro clientes. Como se puede observar, este es un modelo bastante genérico definido en el seedwork (pero usted puede hacerlo mucho más complejo).
-- Los archivos **src/aeroalpes/seedwork/infraestructura/proyecciones.py** y **src/aeroalpes/seedwork/infraestructura/vistas.py** proveen las interfaces y definiciones genéricas para las proyecciones, handlers y vistas.
 
-## AeroAlpes
-### Ejecutar Base de datos
-Desde el directorio principal ejecute el siguiente comando.
+¨¨¨
 
-```bash
-docker-compose --profiles db up
-```
+Además seguimos los siguientes lineamientos. 
+1. Para este ejercicio seguimos los principios de microservicios basados en eventos. Por tal motivo la comunicación entre los servicios **se realizó usando comandos y eventos **
+2. Definimos los eventos de acuerdo a los escenarios de calidad a satisfacer en este caso usamos eventos de integración. Adicionalmente diseñamos el esquema en formato **Json** y usamos el sistema de versionamiento que nos provee el broker de pulsar en su estrategía **Full compatibilty ** ,
 
-Este comando descarga las imágenes e instala las dependencias de la base datos.
 
-### Ejecutar Aplicación
+## Intrucciones de ejecución del proyecto
+1. Clonar repositorio
+2. Agregar al repositorio el archivo .env, enviado al canal de slack y al correo del tutor.
+3. Iniciar servicio A con el comando
+4. Iniciar servicio B con el comando 
+5. Iniciar servicio C con el comando
+6. Enviar mensaje para inicio del flujo
 
-Desde el directorio principal ejecute el siguiente comando.
 
-```bash
-flask --app src/aeroalpes/api run
-```
 
-Siempre puede ejecutarlo en modo DEBUG:
+## Enlace video entrega parcial
 
-```bash
-flask --app src/aeroalpes/api --debug run
-```
+## Descripción de actividades por integrante
+A continuación se describe por integrante el aporte individual y como contribuyó al equipo.
 
-### Ejecutar pruebas
+### Cesar Chembi
+- Construcción del microservicio de "Servicio de Recogida"
+- Construcción lógica de hoja de ruta
+- Construcción de peristencia para el servicio de Recogida
+- Construcción de server mock para la simulación de respuesta de los centros de distribución externos.
 
-```bash
-coverage run -m pytest
-```
+### Giovani Briceño
+- Construcción microservicios Ordenes.
+- Adaptación lógica de consumo y producción de mensajes al broker.
+- Refactor y adaptación de código de tutoriales para proyecto.
+- Construcción de REST API, para la invocación de llamados al servicio de ordenes y traducción a eventos a esquema EDA. 
+- Construcción de persistencia para el servicio de ordenes.
 
-### Ver reporte de covertura
-```bash
-coverage report
-```
+### Albeiro Cuadrado
+- Diseño de arquitectura de experimentación.
+- Configuración y manejo del broker apache pulsar
+- Configuración de georeplicación en el broker para favorecer atributo de Disponibilidad
+- Configuración y definición del particionamiento para favorecer atributo de Escalabilidad
+- Definición de esquemas y evolución de mensajes.
+- Apoyo al equipo en códificación de microservicios en python.
 
-### Crear imagen Docker
-
-Desde el directorio principal ejecute el siguiente comando.
-
-```bash
-docker build . -f aeroalpes.Dockerfile -t aeroalpes/flask
-```
-
-### Ejecutar contenedora (sin compose)
-
-Desde el directorio principal ejecute el siguiente comando.
-
-```bash
-docker run -p 5000:5000 aeroalpes/flask
-```
-
-## Sidecar/Adaptador
-### Instalar librerías
-
-En el mundo real es probable que ambos proyectos estén en repositorios separados, pero por motivos pedagógicos y de simpleza, 
-estamos dejando ambos proyectos en un mismo repositorio. Sin embargo, usted puede encontrar un archivo `sidecar-requirements.txt`, 
-el cual puede usar para instalar las dependencias de Python para el servidor y cliente gRPC.
-
-```bash
-pip install -r sidecar-requirements.txt
-```
-
-### Ejecutar Servidor
-
-Desde el directorio principal ejecute el siguiente comando.
-
-```bash
-python src/sidecar/main.py 
-```
-
-### Ejecutar Cliente
-
-Desde el directorio principal ejecute el siguiente comando.
-
-```bash
-python src/sidecar/cliente.py 
-```
-
-### Compilación gRPC
-
-Desde el directorio `src/sidecar` ejecute el siguiente comando.
-
-```bash
-python -m grpc_tools.protoc -Iprotos --python_out=./pb2py --pyi_out=./pb2py --grpc_python_out=./pb2py protos/vuelos.proto
-```
-
-### Crear imagen Docker
-
-Desde el directorio principal ejecute el siguiente comando.
-
-```bash
-docker build . -f adaptador.Dockerfile -t aeroalpes/adaptador
-```
-
-### Ejecutar contenedora (sin compose)
-
-Desde el directorio principal ejecute el siguiente comando.
-
-```bash
-docker run -p 50051:50051 aeroalpes/adaptador
-```
-
-## Microservicio Notificaciones
-### Ejecutar Aplicación
-
-Desde el directorio principal ejecute el siguiente comando.
-
-```bash
-python src/notificaciones/main.py
-```
-
-### Crear imagen Docker
-
-Desde el directorio principal ejecute el siguiente comando.
-
-```bash
-docker build . -f notificacion.Dockerfile -t aeroalpes/notificacion
-```
-
-### Ejecutar contenedora (sin compose)
-
-Desde el directorio principal ejecute el siguiente comando.
-
-```bash
-docker run aeroalpes/notificacion
-```
-
-## UI Websocket Server
-### Ejecutar Aplicación
-
-Desde el directorio principal ejecute el siguiente comando.
-
-```bash
-python src/ui/main.py
-```
-
-### Crear imagen Docker
-
-Desde el directorio principal ejecute el siguiente comando.
-
-```bash
-docker build . -f ui.Dockerfile -t aeroalpes/ui
-```
-
-### Ejecutar contenedora (sin compose)
-
-Desde el directorio principal ejecute el siguiente comando.
-
-```bash
-docker run aeroalpes/ui
-```
-
-## CDC & Debezium
-
-**Nota**: Antes de poder ejectuar todos los siguientes comandos DEBE tener la base de datos MySQL corriendo.
-
-### Descargar conector de Debezium
-
-```
-wget https://archive.apache.org/dist/pulsar/pulsar-2.10.1/connectors/pulsar-io-debezium-mysql-2.10.1.nar
-```
-
-### Ejecutar Debezium
-Abrir en una terminal:
-
-```bash
-docker exec -it broker bash
-```
-
-Ya dentro de la contenedora ejecute:
-```bash
-./bin/pulsar-admin source localrun --source-config-file /pulsar/connectors/debezium-mysql-source-config.yaml --destination-topic-name debezium-mysql-topic
-```
-
-### Consumir eventos Debezium
-
-Abrir en una terminal:
-
-```bash
-docker exec -it broker bash
-```
-
-Ya dentro de la contenedora ejecute:
-
-```bash
-./bin/pulsar-client consume -s "sub-datos" public/default/aeroalpesdb.reservas.usuarios_legado -n 0
-```
-
-### Consultar tópicos
-Abrir en una terminal:
-
-```bash
-docker exec -it broker bash
-```
-
-Ya dentro de la contenedora ejecute:
-
-```bash
-./bin/pulsar-admin topics list public/default
-```
-
-### Cambiar retención de tópicos
-Abrir en una terminal:
-
-```bash
-docker exec -it broker bash
-```
-Ya dentro de la contenedora ejecute:
-
-```bash
-./bin/pulsar-admin namespaces set-retention public/default --size -1 --time -1
-```
-
-Para poder ver que los cambios fueron efectivos ejecute el siguiente comando:
-
-```bash
-./bin/pulsar-admin namespaces get-retention public/default
-```
-
-**Nota**: Esto nos dejará con una retención infinita. Sin embargo, usted puede cambiar la propiedad de `size` para poder usar [Tiered Storage](https://pulsar.apache.org/docs/2.11.x/concepts-tiered-storage/)
-
-### Instrucciones oficiales
-
-Para seguir la guía oficial de instalación y uso de Debezium en Apache Pulsar puede usar el siguiente [link](https://pulsar.apache.org/docs/2.10.x/io-cdc-debezium/)
-
-
-## Docker-compose
-
-Para desplegar toda la arquitectura en un solo comando, usamos `docker-compose`. Para ello, desde el directorio principal, ejecute el siguiente comando:
-
-```bash
-docker-compose up
-```
-
-Si desea detener el ambiente ejecute:
-
-```bash
-docker-compose stop
-```
-
-En caso de querer desplegar dicha topología en el background puede usar el parametro `-d`.
-
-```bash
-docker-compose up -d
-```
+### Juan Camilo Acevedo
+- Construcción del microservicio  de almacenamientos a terceros
+- Construcción de SideCar Adaptador para centros de distribución externos para favorecer atributo Interoperabilidad.
+- Construcción lógica de creación de hoja de rutas.
+- Construcción base de datos de microservicio de almacenamiento terceros.
+- Gestión de subscripciones del broker.
+- 
 
 ## Comandos útiles
 
