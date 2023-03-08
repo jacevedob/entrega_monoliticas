@@ -43,19 +43,27 @@ Además seguimos los siguientes lineamientos.
 2. Agregar al repositorio el archivo .env, adjuntos en el archivo del entregable.
 
 3. Iniciar las bases de datos
+```
+docker-compose --profile db_terceros up
+docker-compose --profile db_ordenes up
+docker-compose --profile db_pedidos up
+```
 
-![image](https://user-images.githubusercontent.com/78766013/223617903-72ab9da0-765a-4c71-9175-e306e9f3893f.png)
 
 4. Construcción de imagen del docker compose
 
+```
+sudo docker build . -f terceros.Dockerfile -t bodegas
+```
 
-![image](https://user-images.githubusercontent.com/78766013/223620785-f57d7f75-961b-4c85-838a-fc06ed59b732.png)
 
 
 5. Iniciar servicios 
-
-
-![image](https://user-images.githubusercontent.com/78766013/223620743-496fb964-7832-4224-a264-4dd79b9022de.png)
+```
+docker-compose --profile bodegas up
+flask --app entregasalpes/api/ordenes --debug run
+flask --app entregasalpes/api/pedidos --debug run
+```
 
 
 6. Enviar mensaje para inicio del flujo
@@ -63,9 +71,12 @@ Además seguimos los siguientes lineamientos.
 
 ![image](https://user-images.githubusercontent.com/78766013/223618174-95d220dc-e5f1-4ac0-8671-a68b7dab5ee2.png)
 
+## Estructura del proyecto
+- Ver video con sustentación.
 
 
 ## Enlace video entrega parcial
+https://www.dropbox.com/scl/fo/0i0hlskv9puu6hrhtkeld/h?dl=0&rlkey=jvm0drxxzmhflefsdpvyxc9nn
 
 ## Descripción de actividades por integrante
 A continuación se describe por integrante el aporte individual y como contribuyó al equipo.
