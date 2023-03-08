@@ -3,7 +3,7 @@ A continuación presentamos la entrega parcial o Entrega #4.
 
 En esta entrega presentamos 3 microservicios con comunicación asincrona ( comandos y eventos) usando Apache Pulsar y usando un modelo clásico **CRUD**  para las bases de datos. 
 
-El proposito de este es que los ingenieros puedan aprciar una prueba de concepto de la arquitectura solución para el proyecto Entrega Alpes, por medio de la validación de 3 escenarios de calidad para cada atributo de calidad en este caso ( Disponibilidad, Interoperabilidad, Escalabilidad), a continuación se describen., a continuación se describen.
+El proposito de este es que los ingenieros puedan apreciar una prueba de concepto de la arquitectura solución para el proyecto Entrega Alpes, por medio de la validación de 3 escenarios de calidad para cada atributo de calidad en este caso ( Disponibilidad, Interoperabilidad, Escalabilidad), a continuación se describen., a continuación se describen.
 
 Escenario de calidad.
 Atributo de calidad.
@@ -13,7 +13,6 @@ Para lograr lo anterior, planteamos la siguiente arquitectura modelo para llevar
 ![image](https://user-images.githubusercontent.com/78766013/223618412-346bb8fc-3f1d-44b3-9525-28c5d604d73c.png)
 
 
-¨¨¨
 
 Además seguimos los siguientes lineamientos. 
 1. Para este ejercicio seguimos los principios de microservicios basados en eventos. Por tal motivo la comunicación entre los servicios **se realizó usando comandos y eventos **
