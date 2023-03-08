@@ -7,6 +7,7 @@ import traceback
 import datetime
 import os
 from dotenv import load_dotenv
+from pulsar import ConsumerType
 
 from entregasalpes.modulos.ordenes.infraestructura.schema.v1.eventos import EventoOrdenCreada
 from entregasalpes.modulos.ordenes.infraestructura.schema.v1.comandos import ComandoCrearOrden
@@ -25,7 +26,7 @@ def suscribirse_a_eventos(app=None):
         service_url = os.getenv('PULSAR_URL') 
         pulsar_consumer = os.getenv('PULSAR_PROD_ORDENES') 
         client = pulsar.Client(service_url, authentication=pulsar.AuthenticationToken(token))
-        consumer = client.subscribe(pulsar_consumer, 'test-subscription')
+        consumer = client.subscribe(pulsar_consumer, 'orden-subscription-consumer', ConsumerType.Shared)
         while True:
             msg = consumer.receive()
             print("MENSAJE suscribirse_a_eventos ",msg.data())
@@ -71,7 +72,7 @@ def suscribirse_a_comandos(app=None):
         service_url = os.getenv('PULSAR_URL') 
         pulsar_consumer = os.getenv('PULSAR_PROD_ORDENES') 
         client = pulsar.Client(service_url, authentication=pulsar.AuthenticationToken(token))
-        consumer = client.subscribe(pulsar_consumer, 'test-subscription')
+        consumer = client.subscribe(pulsar_consumer, 'ordenes-subscription-consumer',ConsumerType.Shared)
         while True:
             msg = consumer.receive()
             print("MENSAJE suscribirse_a_comandos ",msg.data())

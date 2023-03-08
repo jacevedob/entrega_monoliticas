@@ -7,6 +7,8 @@ db = None
 DB_USERNAME = os.getenv('DB_USERNAME', default="root")
 DB_PASSWORD = os.getenv('DB_PASSWORD', default="adminadmin")
 DB_HOSTNAME = os.getenv('DB_HOSTNAME', default="localhost")
+DB_DATABASE = os.getenv('DATABASE_ORDENES', default="ordenes")
+DB_DATABASE_PEDIDOS = os.getenv('DATABASE_PEDIDOS', default="pedidos")
 
 class DatabaseConfigException(Exception):
     def __init__(self, message='Configuration file is Null or malformed'):
@@ -17,14 +19,26 @@ class DatabaseConfigException(Exception):
 def database_connection(config, basedir=os.path.abspath(os.path.dirname(__file__))) -> str:
     if (config == None):
         print('                                  asdas a              ->   ',config)
-        return f'mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}/ordenes'
+        return f'mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}/{DB_DATABASE}'
     if not isinstance(config,dict):
         raise DatabaseConfigException
     
     if config.get('TESTING', False) == True:
         return f'sqlite:///{os.path.join(basedir, "database.db")}'
     else:
-        return f'mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}/ordenes'
+        return f'mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}/{DB_DATABASE}'
+
+def database_connection_pedidos(config, basedir=os.path.abspath(os.path.dirname(__file__))) -> str:
+    if (config == None):
+        print('                                  asdas a              ->   ',config)
+        return f'mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}/{DB_PEDIDOS}'
+    if not isinstance(config,dict):
+        raise DatabaseConfigException
+    
+    if config.get('TESTING', False) == True:
+        return f'sqlite:///{os.path.join(basedir, "database.db")}'
+    else:
+        return f'mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}/{DB_PEDIDOS}'
 
 
 def init_db(app: Flask):

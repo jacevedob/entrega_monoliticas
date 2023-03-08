@@ -7,6 +7,7 @@ import traceback
 import datetime
 import os
 from dotenv import load_dotenv
+from pulsar import ConsumerType
 
 from entregasalpes.modulos.unificacion_pedidos.infraestructura.schema.v1.eventos import EventoUnificacionPedidosCreada
 from entregasalpes.modulos.unificacion_pedidos.infraestructura.schema.v1.comandos import ComandoCrearUnificacionPedidos
@@ -24,9 +25,9 @@ def suscribirse_a_eventos(app=None):
         service_url = os.getenv('PULSAR_URL') 
         pulsar_consumer = os.getenv('PULSAR_CONSUMER_PEDIDOS') 
         client = pulsar.Client(service_url, authentication=pulsar.AuthenticationToken(token))
-        consumidor = client.subscribe(pulsar_consumer, 'test-subscription')
+        consumidor = client.subscribe(pulsar_consumer, 'pedidos-subscription-consumer', ConsumerType.Shared)
         #cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('eventos-pedidos', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='entregasalpes-sub-eventos', schema=AvroSchema(EventoUnificacionPedidosCreada))
+        #consumidor = cliente.subscribe('eventos-pedidos', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='entregasalpes-sub-eventos', schema=AvroSchema(EventoUnificacionPedidosCreada))
 
         while True:
             mensaje = consumidor.receive()
