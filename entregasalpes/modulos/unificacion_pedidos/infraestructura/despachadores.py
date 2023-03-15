@@ -1,19 +1,19 @@
 import pulsar
 from pulsar.schema import *
 
-from entregasalpes.modulos.ordenes.infraestructura.schema.v1.eventos import EventoOrdenCreada, OrdenCreadaPayload
-from entregasalpes.modulos.ordenes.infraestructura.schema.v1.comandos import ComandoCrearOrden, ComandoCrearOrdenPayload
+from entregasalpes.modulos.unificacion_pedidos.infraestructura.schema.v1.eventos import EventoUnificacionPedidosCreada, UnificacionPedidosCreadaPayload
+from entregasalpes.modulos.unificacion_pedidos.infraestructura.schema.v1.comandos import ComandoCrearUnificacionPedidos, ComandoCrearUnificacionPedidosPayload
 from entregasalpes.seedwork.infraestructura import utils
 
-from entregasalpes.modulos.ordenes.infraestructura.mapeadores import MapadeadorEventosOrden
+from entregasalpes.modulos.unificacion_pedidos.infraestructura.mapeadores import MapadeadorEventosUnificacionPedidos
 
 class Despachador:
     def __init__(self):
-        self.mapper = MapadeadorEventosOrden()
+        self.mapper = MapadeadorEventosUnificacionPedidos()
 
     def _publicar_mensaje(self, mensaje, topico, schema):
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        publicador = cliente.create_producer(topico, schema=AvroSchema(EventoOrdenCreada))
+        publicador = cliente.create_producer(topico, schema=AvroSchema(EventoUnificacionPedidosCreada))
         publicador.send(mensaje)
         cliente.close()
 
@@ -23,9 +23,9 @@ class Despachador:
 
     def publicar_comando(self, comando, topico):
         # TODO Debe existir un forma de crear el Payload en Avro con base al tipo del comando
-        payload = ComandoCrearOrdenPayload(
+        payload = ComandoCrearUnificacionPedidosPayload(
            # id_usuario=str(comando.id_usuario)
             # agregar itinerarios
         )
-        comando_integracion = ComandoCrearOrden(data=payload)
-        self._publicar_mensaje(comando_integracion, topico, AvroSchema(ComandoCrearOrden))
+        comando_integracion = ComandoCrearUnificacionPedidos(data=payload)
+        self._publicar_mensaje(comando_integracion, topico, AvroSchema(ComandoCrearUnificacionPedidos))

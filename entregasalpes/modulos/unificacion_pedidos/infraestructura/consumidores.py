@@ -27,7 +27,7 @@ def suscribirse_a_eventos(app=None):
         client = pulsar.Client(service_url, authentication=pulsar.AuthenticationToken(token))
         consumidor = client.subscribe(pulsar_consumer, 'pedidos-subscription-consumer', ConsumerType.Shared)
         #cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        #consumidor = cliente.subscribe('eventos-pedidos', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='entregasalpes-sub-eventos', schema=AvroSchema(EventoUnificacionPedidosCreada))
+        #consumidor = cliente.subscribe(pulsar_consumer,  'pedidos-subscription-consumer', consumer_type=_pulsar.ConsumerType.Shared)
 
         while True:
             mensaje = consumidor.receive()
@@ -38,7 +38,8 @@ def suscribirse_a_eventos(app=None):
             #ejecutar_proyeccion(ProyeccionReservasTotales(datos.fecha_creacion, ProyeccionReservasTotales.ADD), app=app)
             #ejecutar_proyeccion(ProyeccionReservasLista(datos.id_reserva, datos.id_cliente, datos.estado, datos.fecha_creacion, datos.fecha_creacion), app=app)
             
-            consumidor.acknowledge(mensaje)     
+            consumidor.acknowledge(mensaje) 
+
 
         cliente.close()
     except:
