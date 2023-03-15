@@ -35,21 +35,20 @@ async def app_startup():
     url = os.getenv('PULSAR_URL') 
     topicEventoOrdenes = os.getenv('PULSAR_CONSUMER_TERCEROS')
     topicEventoPedidos = os.getenv('PULSAR_PRODUCER_TERCEROS')
-    topicEventoSagas = os.getenv('PULSAR_CONSUMER_SAGA') 
+    topicEventoSagas = os.getenv('PULSAR_CONSUMER_SAGA')
+    topicEventosCompensacion = os.getenv('PULSAR_COMPENSACION')
 
-    #topicEventoOrdenes = 'persistent://experimentos-monoliticos/monoliticas/ordenes'
-    #topicEventoPedidos = 'persistent://experimentos-monoliticos/monoliticas/eventos-pedidos'
-    #topicEventoSagas = 'persistent://experimentos-monoliticos/monoliticas/saga'
-    #url = 'pulsar+ssl://pulsar-aws-useast2.streaming.datastax.com:6651'
-    #token =  token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Nzc4OTAzODQsImlzcyI6ImRhdGFzdGF4Iiwic3ViIjoiY2xpZW50O2RjNTk2NmQxLTgxMWUtNDhjNi1hYTlkLThmYzdjNzI1ZjYyZTtaWGh3WlhKcGJXVnVkRzl6TFcxdmJtOXNhWFJwWTI5ejsxZmIzYWEzOGQ1IiwidG9rZW5pZCI6IjFmYjNhYTM4ZDUifQ.jtRQfeQxyDH1Bp84WSPmtsSpqnl0cZjl2nkigqzIMgy_H-qALSAd-Uci79aaeUhagQYIeuNf5z8WJ2OMoA-Xzk3x3JMw3eAOcnFeE6WEODqgtjHdhlScAgM2WBZYCYM3D9dJMTBxdHGYYmQ8stkk9qpv3z3K-2YySzI_xIUa6pn1Mt4htZ1bTPtPyXCWm6JjFHmgbnHgkgtD2PAW00mnBGjgMc6anJ_ac7qup44khF4bA5-spee-jC6SEqfJ-mQl7uwcVrBrcOh8FXI-KXff91tNsTYWp9jaTCuj1l8RCK6LAAtWKi5NwC33Y-xqjCgdi4PPD_QWy07PWSZr0iWEfA'
     subscripcion = 'terceros-subscription-consumer'
     task1 = asyncio.ensure_future(suscribirseOrdenes(topicEventoOrdenes, subscripcion, url, token))
     task2 = asyncio.ensure_future(suscribirsePedidos(topicEventoPedidos, subscripcion, url, token))
     task3 = asyncio.ensure_future(suscribirseSagas(topicEventoSagas, subscripcion, url, token))
+    task4 = asyncio.ensure_future(suscribirseCompensacion(topicEventosCompensacion, subscripcion, url, token))
 
     tasks.append(task1)
     tasks.append(task2)
     tasks.append(task3)
+    tasks.append(task4) 
+    
 
 @app.on_event("shutdown")
 def shutdown_event():
