@@ -32,7 +32,7 @@ def suscribirse_a_eventos(app=None):
         while True:
             mensaje = consumidor.receive()
             datos = mensaje.data()
-            print(f'Evento recibido: {datos}')
+            print(f'Evento recibido Topico Pedidos: {datos}')
 
             # TODO Identificar el tipo de CRUD del evento: Creacion, actualización o eliminación.
             #ejecutar_proyeccion(ProyeccionReservasTotales(datos.fecha_creacion, ProyeccionReservasTotales.ADD), app=app)
