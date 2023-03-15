@@ -28,6 +28,10 @@ class CrearUnificacionPedidosHandler(CrearUnificacionPedidosBaseHandler):
     
     def handle(self, comando: CrearUnificacionPedidos):
         print('en el handler CrearUnificacionPedidosHandler-----------------', comando)
+
+
+
+        
     
      #   orden_dto = OrdenDTO(
      #           id_cliente=comando.id_cliente
