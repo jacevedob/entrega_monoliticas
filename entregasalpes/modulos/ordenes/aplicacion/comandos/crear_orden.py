@@ -60,7 +60,9 @@ class CrearOrdenHandler(CrearOrdenBaseHandler):
         #UnidadTrabajoPuerto.commit()
         resultado = registra_orden(orden_dto)
         print (resultado)
-        self.enviaSagas(orden_dto.id, resultado)
+        
+        if resultado != 'error_o':
+            self.enviaSagas(orden_dto.id, resultado)
 
         #send_topic(orden_dto)
 

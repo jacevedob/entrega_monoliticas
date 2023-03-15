@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from entregasalpes.modulos.ordenes.dominio.entidades import Orden
 from entregasalpes.modulos.ordenes.aplicacion.dto import ProductoDTO, OrdenDTO
+import json
 
 load_dotenv()
 hostname = os.getenv('DB_HOSTNAME', default="localhost")
@@ -33,14 +34,14 @@ def registra_orden(orden: OrdenDTO):
     print(mycursor.rowcount, "registro insertado orden")
   except mysql.connector.Error as e:
     print("----------------------------------- >Error", e)
-    return "error"
+    return "error_o"
 
   print(mycursor.rowcount, "registro insertado")
   print("mis prod - - - - -", orden.productos)
 
   try:
     for producto in orden.productos:
-      print ('sxxxxxxxxxxxxxxxxxxxxxx Serial xxxxxxxxxxxxxx ', producto[0].serial)
+      print ('sxxxxxxxxxxxxxxxxxxxxxx valuyes  xxxxxxxxxxxxxx ', producto[0].serial)
       sql = "INSERT INTO productos (serial, descripcion, precio, fecha_vencimiento ) VALUES (%s, %s, %s, %s)"
       val = (str(producto[0].serial), str(producto[0].descripcion), int(producto[0].precio), str(producto[0].fecha_vencimiento) )
       mycursor.execute(sql, val)
@@ -48,6 +49,60 @@ def registra_orden(orden: OrdenDTO):
     
 
     print(mycursor.rowcount, "registro insertado productos")
+    return "success"
   except mysql.connector.Error as e:
     print("Error", e)
     return "error"
+
+def compensacion_orden(dato):
+  try:
+    mydb = mysql.connector.connect(
+      host = hostname,
+      user = user,
+      password = password,
+      database = database,
+      port=3306
+    )
+  except mysql.connector.Error as err:
+    print("Something went wrong: {}".format(err))
+  valor = str(dato)
+  eldato = valor[1:]
+
+  
+  print("----------------------------valor------------------------->",valor);
+  
+  print("----------------------------eldato --------------------------->",eldato);
+  elidStr = eldato.replace("'", "")
+  print("----------------------------eldato --------------------------->",elidStr);
+  #elid = int(elidStr)
+
+  try:
+    mycursor = mydb.cursor()
+    sql = "DELETE from  ordenes WHERE id =  "+elidStr
+    val = ()
+    mycursor.execute(sql)
+    mydb.commit()
+    print(mycursor.rowcount, "registro borrado")
+    return "success"
+  except mysql.connector.Error as e:
+    print("----------------------------------- >Error", e)
+    return "error"
+#
+#  print(mycursor.rowcount, "registro insertado")
+#  print("mis prod - - - - -", orden.productos)
+#
+#  try:
+#    for producto in orden.productos:
+#      print ('sxxxxxxxxxxxxxxxxxxxxxx Serial xxxxxxxxxxxxxx ', producto[0].serial)
+#      sql = "INSERT INTO productos (serial, descripcion, precio, fecha_vencimiento ) VALUES (%s, %s, %s, %s)"
+#      val = (str(producto[0].serial), str(producto[0].descripcion), int(producto[0].precio), str(producto[0].fecha_vencimiento) )
+#      mycursor.execute(sql, val)
+#      mydb.commit()
+#    
+#
+#    print(mycursor.rowcount, "registro insertado productos")
+#    return "success"
+#  except mysql.connector.Error as e:
+#    print("Error", e)
+#    return "error"
+#
