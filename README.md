@@ -8,8 +8,7 @@ El proposito de este es que los ingenieros puedan apreciar una prueba de concept
 
 Se presenta el diagrama de arquitectura usando el patrón SAGA, BFF, Saga LOG y compensación
 
-![image](https://user-images.githubusercontent.com/78766013/225208257-a980d472-1403-44c4-ab14-8d09eb2dfbab.png)
-
+![image](https://user-images.githubusercontent.com/78766013/225208923-f02b404f-aeda-40e9-b7b8-923ca8e25c2a.png)
 
 
 ### Disponibilidad
