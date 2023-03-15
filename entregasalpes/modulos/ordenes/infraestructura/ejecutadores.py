@@ -24,23 +24,30 @@ def registra_orden(orden: OrdenDTO):
 
   print("------------------------------------------------------->",orden.id, '',orden.id_cliente, '',orden.fecha_creacion);
 
-  mycursor = mydb.cursor()
-  sql = "INSERT INTO ordenes (id, id_cliente, fecha_creacion ) VALUES (%s, %s, %s)"
-  val = (orden.id, orden.id_cliente, orden.fecha_creacion)
-  mycursor.execute(sql, val)
-  mydb.commit()
-  print(mycursor.rowcount, "registro insertado orden")
+  try:
+    mycursor = mydb.cursor()
+    sql = "INSERT INTO ordenes (id, id_cliente, fecha_creacion ) VALUES (%s, %s, %s)"
+    val = (orden.id, orden.id_cliente, orden.fecha_creacion)
+    mycursor.execute(sql, val)
+    mydb.commit()
+    print(mycursor.rowcount, "registro insertado orden")
+  except mysql.connector.Error as e:
+    print("----------------------------------- >Error", e)
+    return "error"
 
   print(mycursor.rowcount, "registro insertado")
   print("mis prod - - - - -", orden.productos)
 
+  try:
+    for producto in orden.productos:
+      print ('sxxxxxxxxxxxxxxxxxxxxxx Serial xxxxxxxxxxxxxx ', producto[0].serial)
+      sql = "INSERT INTO productos (serial, descripcion, precio, fecha_vencimiento ) VALUES (%s, %s, %s, %s)"
+      val = (str(producto[0].serial), str(producto[0].descripcion), int(producto[0].precio), str(producto[0].fecha_vencimiento) )
+      mycursor.execute(sql, val)
+      mydb.commit()
+    
 
-  for producto in orden.productos:
-    print ('sxxxxxxxxxxxxxxxxxxxxxx Serial xxxxxxxxxxxxxx ', producto[0].serial)
-    sql = "INSERT INTO productos (serial, descripcion, precio, fecha_vencimiento ) VALUES (%s, %s, %s, %s)"
-    val = (str(producto[0].serial), str(producto[0].descripcion), int(producto[0].precio), str(producto[0].fecha_vencimiento) )
-    mycursor.execute(sql, val)
-    mydb.commit()
-  
-
-  print(mycursor.rowcount, "registro insertado productos")
+    print(mycursor.rowcount, "registro insertado productos")
+  except mysql.connector.Error as e:
+    print("Error", e)
+    return "error"
