@@ -30,8 +30,8 @@ def database_connection(config, basedir=os.path.abspath(os.path.dirname(__file__
 
 def database_connection_pedidos(config, basedir=os.path.abspath(os.path.dirname(__file__))) -> str:
     if (config == None):
-        print('                                  asdas a              ->   ',config)
-        return f'mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}/{DB_DATABASE_PEDIDOS}'
+        print(' Intento conexion pedidos->   ',config)
+        return f'mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}:3308/{DB_DATABASE_PEDIDOS}'
     if not isinstance(config,dict):
         raise DatabaseConfigException
     
