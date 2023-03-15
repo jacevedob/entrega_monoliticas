@@ -7,10 +7,10 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 def importar_modelos_alchemy():
-    import entregasalpes.modulos.ordenes.infraestructura.dto
+    import entregasalpes.modulos.unificacion_pedidos.infraestructura.dto
 
 def registrar_handlers():
-    import entregasalpes.modulos.ordenes.aplicacion
+    import entregasalpes.modulos.unificacion_pedidos.aplicacion
 
 def comenzar_consumidor(app):
     """
@@ -20,7 +20,7 @@ def comenzar_consumidor(app):
     """
 
     import threading
-    import entregasalpes.modulos.ordenes.infraestructura.consumidores as ordenes    
+    #import entregasalpes.modulos.ordenes.infraestructura.consumidores as ordenes    
     import entregasalpes.modulos.unificacion_pedidos.infraestructura.consumidores as pedidos
 
     # Suscripción a eventos
@@ -65,10 +65,10 @@ def create_app(configuracion=None):
         #    comenzar_consumidor(app)
 
      # Importa Blueprints
-    from . import ordenes
+    #from . import ordenes
 
     # Registro de Blueprints
-    app.register_blueprint(ordenes.bp)
+    #app.register_blueprint(ordenes.bp)
 
     @app.route("/spec")
     def spec():

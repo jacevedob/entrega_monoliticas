@@ -1,7 +1,3 @@
-import pulsar
-import os
-from dotenv import load_dotenv
-from pulsar import ConsumerType
 
 def publicarPedido(msg, topic):
     load_dotenv()

@@ -71,11 +71,6 @@ flask --app entregasalpes/api/ordenes --debug run
 flask --app entregasalpes/api/pedidos --debug run
 ```
 
-6. BFF: Web
-
-Desde el directorio 'src' ejecute el siguiente comando en bash
-
-uvicorn bff_web.main:app --host localhost --port 8003 --reload
 
 6. Enviar mensaje para inicio del flujo
 

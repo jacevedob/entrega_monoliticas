@@ -26,7 +26,7 @@ class UnificacionPedidos(db.Model):
     fecha_recogida = db.Column(db.String(10), nullable=False)
     fecha_entrega = db.Column(db.String(10), nullable=False)
     estado = db.Column(db.String(20), nullable=False)
-    productos = db.relationship('Producto', secondary=ordenes_productos, backref='unificacion_pedidos')
+    productos = db.relationship('Producto', secondary=unificacion_pedidos_productos, backref='unificacion_pedidos')
 
 class EventosUnificacionPedidos(db.Model):
     __tablename__ = "eventos_unificacion_pedidos"

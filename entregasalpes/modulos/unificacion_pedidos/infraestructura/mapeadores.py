@@ -46,7 +46,7 @@ class MapeadorUnificacionPedidos(Mapeador):
         unificacion_pedidos_dto.productos = productos_dto
         return unificacion_pedidos_dto
 
-    def dto_a_entidad(self, dto: UnificacionPedidosDTO) -> Orden:
+    def dto_a_entidad(self, dto: UnificacionPedidosDTO) -> UnificacionPedidos:
         unificacion_pedidos = UnificacionPedidos(dto.id, dto.direccion_recogida, dto.direccion_entrega, dto.fecha_recogida, dto.fecha_entrega, dto.estado )
         unificacion_pedidos.productos = list()
 
@@ -95,6 +95,8 @@ class MapadeadorEventosUnificacionPedidos(Mapeador):
     def _entidad_a_unificacion_pedidos_creada(self, entidad: UnificacionPedidosCreada, version=LATEST_VERSION):
         def v1(evento):
             from .schema.v1.eventos import UnificacionPedidosCreadaPayload, EventoUnificacionPedidosCreada
+
+            print('en los mapeadores aguas'+entidad)
 
             payload = UnificacionPedidosCreadaPayload(
 			 id = str(evento.id_pedido),

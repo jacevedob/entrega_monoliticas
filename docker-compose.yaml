@@ -62,8 +62,6 @@ services:
         - pulsar
      ports:
         - '3308:3306'
-     expose:
-       - 3308
      volumes:
         - ./data_pedidos/mysql:/var/lib/mysql
         - ./init-pedidos.sql:/docker-entrypoint-initdb.d/init.sql
