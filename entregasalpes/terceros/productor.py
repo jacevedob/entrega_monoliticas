@@ -11,4 +11,5 @@ def send_topic(topic):
     client = pulsar.Client(service_url, authentication=pulsar.AuthenticationToken(token))
     producer = client.create_producer(producer_pulsar, ConsumerType.Shared)
     producer.send((topic).encode('utf-8'))
+    print('Mensaje de compensación enviado')
     client.close()

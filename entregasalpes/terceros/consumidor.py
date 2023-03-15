@@ -1,6 +1,4 @@
 import pulsar
-#import insert
-#import productor
 import os
 from dotenv import load_dotenv
 from pulsar import ConsumerType

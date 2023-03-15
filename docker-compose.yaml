@@ -66,20 +66,40 @@ services:
         - ./data_pedidos/mysql:/var/lib/mysql
         - ./init-pedidos.sql:/docker-entrypoint-initdb.d/init.sql
 
+# MySQL8
+  saga_log:
+     image: mysql:8
+     hostname: mysqldb_saga
+     container_name: mysqldb_saga
+     cap_add:
+        - SYS_NICE
+     restart: always
+     environment:
+            - MYSQL_DATABASE=saga
+            - MYSQL_ROOT_PASSWORD=adminadmin
+     profiles: [ "db_saga" ]
+     networks:
+        - pulsar
+     ports:
+        - '3309:3306'
+     volumes:
+        - ./data_sagas/mysql:/var/lib/mysql
+        - ./init_saga.sql:/docker-entrypoint-initdb.d/init.sql
+
 #bodegas
   terceros:
     container_name: bodegas
     hostname: bodegas
     image: bodegas 
     profiles: ["bodegas"]
-    environment:
-      - PULSAR_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Nzc4OTAzODQsImlzcyI6ImRhdGFzdGF4Iiwic3ViIjoiY2xpZW50O2RjNTk2NmQxLTgxMWUtNDhjNi1hYTlkLThmYzdjNzI1ZjYyZTtaWGh3WlhKcGJXVnVkRzl6TFcxdmJtOXNhWFJwWTI5ejsxZmIzYWEzOGQ1IiwidG9rZW5pZCI6IjFmYjNhYTM4ZDUifQ.jtRQfeQxyDH1Bp84WSPmtsSpqnl0cZjl2nkigqzIMgy_H-qALSAd-Uci79aaeUhagQYIeuNf5z8WJ2OMoA-Xzk3x3JMw3eAOcnFeE6WEODqgtjHdhlScAgM2WBZYCYM3D9dJMTBxdHGYYmQ8stkk9qpv3z3K-2YySzI_xIUa6pn1Mt4htZ1bTPtPyXCWm6JjFHmgbnHgkgtD2PAW00mnBGjgMc6anJ_ac7qup44khF4bA5-spee-jC6SEqfJ-mQl7uwcVrBrcOh8FXI-KXff91tNsTYWp9jaTCuj1l8RCK6LAAtWKi5NwC33Y-xqjCgdi4PPD_QWy07PWSZr0iWEfA'
-      - PULSAR_URL = 'pulsar+ssl://pulsar-aws-useast2.streaming.datastax.com:6651'
-      - PULSAR_CONSUMER = 'persistent://experimentos-monoliticos/monoliticas/ordenes'
-      - PULSAR_PRODUCER = 'persistent://experimentos-monoliticos/monoliticas/eventos-pedidos'
-      - BODEGAS_ADDRESS = 'mysqldb_terceros'
-      - USER_DB = 'root'
-      - PASSWORD_DB = 'adminadmin'
-      - DATABASE = 'terceros'
+    networks:
+      - pulsar
+
+#bodegas
+  saga:
+    container_name: saga
+    hostname: saga
+    image: saga
+    profiles: ["saga"]
     networks:
       - pulsar
