@@ -8,7 +8,7 @@ from entregasalpes.modulos.ordenes.aplicacion.servicios import ServicioOrden
 from entregasalpes.modulos.ordenes.dominio.entidades import Orden
 from entregasalpes.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 from entregasalpes.modulos.ordenes.aplicacion.mapeadores import MapeadorOrden
-from entregasalpes.modulos.ordenes.infraestructura.repositorios import RepositorioOrdenes, RepositorioEventosOrdenes
+from entregasalpes.modulos.ordenes.infraestructura.ejecutadores import registra_orden
 import os
 from dotenv import load_dotenv
 import pulsar
@@ -56,8 +56,9 @@ class CrearOrdenHandler(CrearOrdenBaseHandler):
         #dto_final = sr.crear_orden(orden_dto)
         #print ("        - -- -- - -- -descues - - -- -- - -- -- crear orden ")
         #return map_orden.dto_a_externo(orden_dto)        
-        UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, orden_dto, repositorio_eventos_func=repositorio_eventos.agregar)
-        UnidadTrabajoPuerto.commit()
+        #UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, orden_dto, repositorio_eventos_func=repositorio_eventos.agregar)
+        #UnidadTrabajoPuerto.commit()
+        registra_orden(orden_dto)
 
         #send_topic(orden_dto)
 
