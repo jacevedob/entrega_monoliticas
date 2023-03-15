@@ -1,10 +1,11 @@
 import mysql.connector
 import os
-import sidecar
+from . import sidecar
 from dotenv import load_dotenv
 
 load_dotenv()
-hostname = os.getenv('BODEGAS_ADDRESS')
+#hostname = os.getenv('BODEGAS_ADDRESS')
+hostname = 'localhost'
 user = os.getenv('USER_DB')
 password = os.getenv('PASSWORD_DB')
 database = os.getenv('DATABASE')
@@ -16,7 +17,7 @@ def insert_db(id_orden):
       user = user,
       password = password,
       database = database,
-      port=3306
+      port=3307
     )
   except mysql.connector.Error as err:
     print("Something went wrong: {}".format(err))

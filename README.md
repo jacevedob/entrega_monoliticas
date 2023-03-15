@@ -1,9 +1,15 @@
-# Entrega #4
-A continuación presentamos la entrega parcial o Entrega #4.
+# Entrega #4 y #5
+A continuación presentamos la entrega final en conjunto con la entrega anterior.
 
-En esta entrega presentamos 3 microservicios con comunicación asincrona ( comandos y eventos) usando Apache Pulsar y usando un modelo clásico **CRUD**  para las bases de datos. 
+En esta entrega presentamos 5 microservicios con comunicación asincrona ( comandos y eventos) usando Apache Pulsar y usando un modelo clásico **CRUD**  para las bases de datos 3 Microservicios del dominio de negocio ( orden, terceros, pedidos) 1 Microservicio como Backend for front end y 1 Microservicio como coordinador del Saga . 
 
 El proposito de este es que los ingenieros puedan apreciar una prueba de concepto de la arquitectura solución para el proyecto Entrega Alpes, por medio de la validación de 3 escenarios de calidad para cada atributo de calidad en este caso ( Disponibilidad, Interoperabilidad, Escalabilidad).
+
+
+Se presenta el diagrama de arquitectura usando el patrón SAGA, BFF, Saga LOG y compensación
+
+![image](https://user-images.githubusercontent.com/78766013/225208923-f02b404f-aeda-40e9-b7b8-923ca8e25c2a.png)
+
 
 ### Disponibilidad
 
@@ -65,6 +71,11 @@ flask --app entregasalpes/api/ordenes --debug run
 flask --app entregasalpes/api/pedidos --debug run
 ```
 
+6. BFF: Web
+
+Desde el directorio 'src' ejecute el siguiente comando en bash
+
+uvicorn bff_web.main:app --host localhost --port 8003 --reload
 
 6. Enviar mensaje para inicio del flujo
 
