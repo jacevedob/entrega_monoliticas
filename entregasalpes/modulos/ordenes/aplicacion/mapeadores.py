@@ -20,7 +20,6 @@ class MapeadorOrdenDTOJson(AppMap):
     
     def externo_a_dto(self, externo: dict) -> OrdenDTO:
         orden_dto = OrdenDTO()
-
         productos: list[ProductoDTO] = list()
         for producto in externo.get('productos', list()):
             orden_dto.productos.append(self._procesar_producto(producto))

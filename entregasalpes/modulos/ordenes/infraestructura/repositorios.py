@@ -13,6 +13,7 @@ from .mapeadores import MapeadorOrden, MapadeadorEventosOrden
 from uuid import UUID
 from .dto import EventosOrden
 from ..aplicacion.dto import OrdenDTO
+from entregasalpes.modulos.ordenes.infraestructura.ejecutadores import registra_orden
 
 
 class RepositorioOrdenesSQLite(RepositorioOrdenes):
@@ -68,6 +69,10 @@ class RepositorioOrdenesSQLAlchemy(RepositorioOrdenes):
         print (" - - - -- - - -agregar - -RepositorioOrdenesSQLAlchemy- -  - >")
         orden_dto = self.fabrica_compras.crear_objeto(orden, MapeadorOrden())
         print (" - - - -- - - -agregar - - orden - -  - >", orden_dto)
+        
+        registra_orden(orden)
+
+
         #db.session.add(orden_dto)
 
         #orden_dto = self.fabrica_ordenes.crear_objeto(orden, MapeadorOrden())
@@ -113,7 +118,7 @@ class RepositorioEventosOrdenSQLAlchemy(RepositorioEventosOrdenes):
         evento_dto.formato_contenido = 'JSON'
         evento_dto.nombre_servicio = str(orden_evento.service_name)
         evento_dto.contenido = json_str
-
+        #TODO ADICIONAR EVENTO
         db.session.add(evento_dto)
 
     def actualizar(self, orden: Orden):

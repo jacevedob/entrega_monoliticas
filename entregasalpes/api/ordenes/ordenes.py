@@ -26,8 +26,10 @@ def ordenar():
         #print(orden_dto)
         #dto_final = sr.crear_orden(orden_dto)
 
+        id_cliente = int( orden_dict.get ('id_cliente', str))
+        id = int( orden_dict.get ('id', str))
 
-        comando = CrearOrden(orden_dto.fecha_creacion, orden_dto.id_cliente, orden_dto.id, orden_dto.productos)
+        comando = CrearOrden(orden_dto.fecha_creacion, id_cliente, id, orden_dto.productos)
         
         # TODO Reemplaze es todo código sincrono y use el broker de eventos para propagar este comando de forma asíncrona
         # Revise la clase Despachador de la capa de infraestructura

@@ -9,6 +9,7 @@ from entregasalpes.modulos.ordenes.dominio.entidades import Orden
 from entregasalpes.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 from entregasalpes.modulos.ordenes.aplicacion.mapeadores import MapeadorOrden
 from entregasalpes.modulos.ordenes.infraestructura.repositorios import RepositorioOrdenes, RepositorioEventosOrdenes
+from entregasalpes.modulos.ordenes.infraestructura.ejecutadores import registra_orden
 import os
 from dotenv import load_dotenv
 import pulsar
@@ -25,7 +26,7 @@ class CrearOrden(Comando):
 class CrearOrdenHandler(CrearOrdenBaseHandler):
     
     def handle(self, comando: CrearOrden):
-        print ("- -- -- - -handle- -- crear agregar ")
+        print ("- -- -- - -handle- -- crear agregar - - - -- -comando - - - - - - - - - - - >", comando)
 
         orden_dto = OrdenDTO(
                 id_cliente=comando.id_cliente
@@ -51,13 +52,15 @@ class CrearOrdenHandler(CrearOrdenBaseHandler):
 
         repositorio = self.fabrica_repositorio.crear_objeto(RepositorioOrdenes)
         repositorio_eventos = self.fabrica_repositorio.crear_objeto(RepositorioEventosOrdenes)
+
+        registra_orden(orden_dto)
         #print ("- -- -- - -- -- crear orden ")
         #sr = ServicioOrden()
         #dto_final = sr.crear_orden(orden_dto)
         #print ("        - -- -- - -- -descues - - -- -- - -- -- crear orden ")
         #return map_orden.dto_a_externo(orden_dto)        
-        UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, orden_dto, repositorio_eventos_func=repositorio_eventos.agregar)
-        UnidadTrabajoPuerto.commit()
+        #UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, orden_dto, repositorio_eventos_func=repositorio_eventos.agregar)
+        #UnidadTrabajoPuerto.commit()
 
         #send_topic(orden_dto)
 
