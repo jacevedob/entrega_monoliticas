@@ -25,6 +25,7 @@ class Despachador:
             cliente = pulsar.Client(url, authentication=pulsar.AuthenticationToken(token))
             publicador = cliente.create_producer(topico)
             publicador.send((mensaje).encode('utf-8'))
+            print("Mensaje publicado ", mensaje)
             cliente.close()
 
     async def publicarSaga(self, mensaje, topico, schema):

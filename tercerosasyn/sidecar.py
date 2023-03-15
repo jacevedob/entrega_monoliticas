@@ -11,7 +11,7 @@ def bodegas():
       posts = r.json()
       datos = json.loads(json.dumps(posts))
       datos_retorno = [datos['nombre'], datos['cantidad'], datos['descripcion'], datos['id_orden'], '1']
-      print(datos_retorno)
+      print("Bodega 1 ", datos_retorno)
       return datos_retorno
     
     elif bodega == 2:
@@ -19,7 +19,7 @@ def bodegas():
       posts = r.json()
       datos = json.loads(json.dumps(posts))
       datos_retorno = [datos['producto'], datos['disponibilidad'], datos['detalle'], datos['id_orden'], '2'] 
-      print(datos_retorno)
+      print("Bodega 2 ", datos_retorno)
       return datos_retorno
 
     elif bodega == 3:
@@ -27,5 +27,5 @@ def bodegas():
       posts = r.json()
       datos = json.loads(json.dumps(posts))
       datos_retorno = [datos['nombre_producto'], datos['cantidad_productos'], datos['descripcion_producto'], datos['id_orden'], '3'] 
-      print(datos_retorno)
+      print("Bodega 3 ", datos_retorno)
       return datos_retorno

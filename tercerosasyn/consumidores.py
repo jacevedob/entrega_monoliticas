@@ -26,11 +26,21 @@ async def suscribirseOrdenes(topico: str, suscripcion: str, url: str, token: str
                     msg_receive = await consumidor.receive()
                     mensaje = str(msg_receive.data())
                     print(f'Orden recibida : {mensaje}')
-                    insert.insert_db('Id12')
-                    msg_transmission = ruta.enviarRuta(mensaje)
+
+                    posIni = mensaje.find("id=")
+                    posFin = mensaje[posIni:].find(",")
+                    id = mensaje[posIni+3: posIni+posFin]
+                    print("Id orden ", id)
+
+                    insert.insert_db(id)
+                    
+                    msg_transmission = ruta.enviarRuta(mensaje, id)
                     print(f'La orden de ruta: {msg_transmission}')
                     #despachador.publicarPedido(msg_transmission, 'persistent://experimentos-monoliticos/monoliticas/eventos-pedidos')
-                    productor.send_topic(msg_transmission, 'persistent://experimentos-monoliticos/monoliticas/eventos-pedidos' )
+                    productor.publicarPedido(msg_transmission, 'persistent://experimentos-monoliticos/monoliticas/eventos-pedidos' )
+                 
+                    msg_saga = '{"source": "Terceros", "status": "success", "id":"' + str(id) +  '"}'
+                    productor.publicarSaga(msg_saga,'persistent://experimentos-monoliticos/monoliticas/saga')
                     await consumidor.acknowledge(msg_receive)    
 
     except Exception as e:
