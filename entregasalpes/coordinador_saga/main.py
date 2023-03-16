@@ -20,9 +20,9 @@ while True:
     try:
         mensaje_decodificado = json.loads(mensaje)
         print(mensaje)
-        saga_log.insert_db(mensaje_decodificado['source'], mensaje_decodificado['status'], mensaje_decodificado['id'])
+        saga_log.insert_db(mensaje_decodificado['source'], mensaje_decodificado['status'], str(mensaje_decodificado['id']))
         if (mensaje_decodificado['status'] == "error"):
-            productor.send_topic('{"id":"' + mensaje_decodificado["id"] + '"}')
+            productor.send_topic('{"id":"' + str(mensaje_decodificado["id"]) + '"}')
     except Exception as e:
         print("error parseando json")
     consumer.acknowledge(msg)

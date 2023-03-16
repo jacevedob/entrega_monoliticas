@@ -1,5 +1,6 @@
 import mysql.connector
 import os
+import pulsar
 from dotenv import load_dotenv
 from entregasalpes.modulos.unificacion_pedidos.dominio.entidades import UnificacionPedidos
 from entregasalpes.modulos.unificacion_pedidos.aplicacion.dto import ProductoDTO, UnificacionPedidosDTO
@@ -23,9 +24,10 @@ def registra_unificacion_pedidos(unificacion_pedidos: UnificacionPedidosDTO):
     print("Something went wrong: {}".format(err))
     return "error"
 
-  print("------------------ingreso al metodo-------->",unificacion_pedidos.id, '',unificacion_pedidos.direccion_entrega, '',unificacion_pedidos.estado)
+  
   try:
     mycursor = mydb.cursor()
+    
     sql = "INSERT INTO unificacion_pedidos (id, direccion_recogida, direccion_entrega, fecha_recogida, fecha_entrega, estado ) VALUES (%s, %s, %s, %s, %s, %s)"
     val = (unificacion_pedidos.id, unificacion_pedidos.direccion_recogida, unificacion_pedidos.direccion_entrega, unificacion_pedidos.fecha_recogida, unificacion_pedidos.fecha_entrega, unificacion_pedidos.estado )
     mycursor.execute(sql, val)
@@ -35,10 +37,11 @@ def registra_unificacion_pedidos(unificacion_pedidos: UnificacionPedidosDTO):
     print(mycursor.rowcount, "registro insertado")
     print("mis prod - - - - -", unificacion_pedidos.productos)
     respuesta = 'success'
-
+    enviaSagas(unificacion_pedidos.id, respuesta)
   except mysql.connector.Error as err:
     print("Something went wrong: {}".format(err))
-  respuesta = 'error'
+    respuesta = 'error'
+    enviaSagas(unificacion_pedidos.id, respuesta)
 
   if respuesta != 'error':
     try:
@@ -53,10 +56,10 @@ def registra_unificacion_pedidos(unificacion_pedidos: UnificacionPedidosDTO):
     except mysql.connector.Error as err:
       print("Something went wrong: {}".format(err))
     respuesta = 'error'
-    enviaSagas(self, unificacion_pedidos.id, respuesta)
+    enviaSagas(unificacion_pedidos.id, respuesta)
 
 
-def enviaSagas(self, id: str, status: str):
+def enviaSagas(id: str, status: str):
         print('Enviando a sagas ', id)
         data = '{"id":'+str(id)+', "status": "'+str(status)+'", "source":"pedidos"}'
         load_dotenv()

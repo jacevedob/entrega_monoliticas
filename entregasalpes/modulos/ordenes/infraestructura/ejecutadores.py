@@ -65,20 +65,13 @@ def compensacion_orden(dato):
     )
   except mysql.connector.Error as err:
     print("Something went wrong: {}".format(err))
-  valor = str(dato)
-  eldato = valor[1:]
-
+  valor = json.loads(dato)
   
   print("----------------------------valor------------------------->",valor);
   
-  print("----------------------------eldato --------------------------->",eldato);
-  elidStr = eldato.replace("'", "")
-  print("----------------------------eldato --------------------------->",elidStr);
-  #elid = int(elidStr)
-
   try:
     mycursor = mydb.cursor()
-    sql = "DELETE from  ordenes WHERE id =  "+elidStr
+    sql = "DELETE from  ordenes WHERE id =  "+ str(valor['id'])
     val = ()
     mycursor.execute(sql)
     mydb.commit()
