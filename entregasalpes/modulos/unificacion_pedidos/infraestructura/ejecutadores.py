@@ -21,12 +21,12 @@ def registra_unificacion_pedidos(unificacion_pedidos: UnificacionPedidosDTO):
     )
   except mysql.connector.Error as err:
     print("Something went wrong: {}".format(err))
-  return "error"
+    return "error"
 
   print("------------------ingreso al metodo-------->",unificacion_pedidos.id, '',unificacion_pedidos.direccion_entrega, '',unificacion_pedidos.estado)
   try:
     mycursor = mydb.cursor()
-    sql = "INSERT INTO unificacion_pedidos (id, id_cliente, fecha_creacion ) VALUES (%s, %s, %s)"
+    sql = "INSERT INTO unificacion_pedidos (id, direccion_recogida, direccion_entrega, fecha_recogida, fecha_entrega, estado ) VALUES (%s, %s, %s, %s, %s, %s)"
     val = (unificacion_pedidos.id, unificacion_pedidos.direccion_recogida, unificacion_pedidos.direccion_entrega, unificacion_pedidos.fecha_recogida, unificacion_pedidos.fecha_entrega, unificacion_pedidos.estado )
     mycursor.execute(sql, val)
     mydb.commit()
@@ -53,12 +53,12 @@ def registra_unificacion_pedidos(unificacion_pedidos: UnificacionPedidosDTO):
     except mysql.connector.Error as err:
       print("Something went wrong: {}".format(err))
     respuesta = 'error'
-    enviaSagas(self, id, respuesta)
+    enviaSagas(self, unificacion_pedidos.id, respuesta)
 
 
 def enviaSagas(self, id: str, status: str):
         print('Enviando a sagas ', id)
-        data = '{"id":'+str(id)+', "status": "'+str(status)+'", "source":"ordenes"}'
+        data = '{"id":'+str(id)+', "status": "'+str(status)+'", "source":"pedidos"}'
         load_dotenv()
         token = os.getenv('PULSAR_TOKEN')
         service_url = os.getenv('PULSAR_URL') 
