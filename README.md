@@ -106,6 +106,8 @@ A continuación se describe por integrante el aporte individual y como contribuy
 - Construcción lógica de hoja de ruta
 - Construcción de peristencia para el servicio de Recogida
 - Construcción de server mock para la simulación de respuesta de los centros de distribución externos.
+- Modificación de servicio de recogida o integración para adaptación con SAGA.
+- Construcción de compensación para el servicio de SAGA
 
 ### Giovani Briceño
 - Construcción microservicios Ordenes.
@@ -113,6 +115,8 @@ A continuación se describe por integrante el aporte individual y como contribuy
 - Refactor y adaptación de código de tutoriales para proyecto.
 - Construcción de REST API, para la invocación de llamados al servicio de ordenes y traducción a eventos a esquema EDA. 
 - Construcción de persistencia para el servicio de ordenes.
+- Modificación de servicio de Orden para adaptación con SAGA.
+- Construcción de compensación para el servicio de SAGA
 
 ### Albeiro Cuadrado
 - Diseño de arquitectura de experimentación.
@@ -121,6 +125,8 @@ A continuación se describe por integrante el aporte individual y como contribuy
 - Configuración y definición del particionamiento para favorecer atributo de Escalabilidad
 - Definición de esquemas y evolución de mensajes.
 - Apoyo al equipo en códificación de microservicios en python.
+- Construcción de SAGA 
+- Construcción SAGALOG
 
 ### Juan Camilo Acevedo
 - Construcción del microservicio  de almacenamientos a terceros
@@ -128,6 +134,9 @@ A continuación se describe por integrante el aporte individual y como contribuy
 - Construcción lógica de creación de hoja de rutas.
 - Construcción base de datos de microservicio de almacenamiento terceros.
 - Gestión de subscripciones del broker.
+- Modificación de servicio de Terceros para adaptación con SAGA.
+- Construcción de compensación para el servicio de SAGA
+- Construcción de BFF
 
 ## Comandos útiles
 
