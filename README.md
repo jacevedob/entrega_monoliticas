@@ -13,6 +13,7 @@ Se presenta el diagrama de arquitectura usando el patrón SAGA, BFF, Saga LOG y 
 ![image](https://user-images.githubusercontent.com/78766013/225208923-f02b404f-aeda-40e9-b7b8-923ca8e25c2a.png)
 
 
+
 ### Disponibilidad
 
 ![image](https://user-images.githubusercontent.com/78766013/223620518-609538bb-f69f-479e-93ab-24d639a36716.png)
@@ -55,27 +56,38 @@ Además seguimos los siguientes lineamientos.
 docker-compose --profile db_terceros up
 docker-compose --profile db_ordenes up
 docker-compose --profile db_pedidos up
+docker-compose --profile db_saga up
 ```
 
 
 4. Construcción de imagen del docker compose
 
 ```
-sudo docker build . -f terceros.Dockerfile -t bodegas
+sudo docker build . -f tercerosasyn.Dockerfile -t tercerosasyn
+sudo docker build . -f saga.Dockerfile -t saga
 ```
 
 
 
 5. Iniciar servicios 
 ```
-docker-compose --profile bodegas up
+docker-compose --profile tercerosasyn up
+docker-compose --profile saga up
+
+
+Instalar requirements fuera del docker
+pip install -r requirementsTerceros.txt 
+
+Ejecutar servicios API fuera de docker
 flask --app entregasalpes/api/ordenes --debug run
 flask --app entregasalpes/api/pedidos --debug run
+uvicorn bff_web.main:app --host localhost --port 8008
 ```
 
 
 6. Enviar mensaje para inicio del flujo
-
+ Archivo postman
+https://github.com/jacevedob/entrega_monoliticas/blob/main/Entre%20%235.postman_collection.json
 
 ![image](https://user-images.githubusercontent.com/78766013/223618174-95d220dc-e5f1-4ac0-8671-a68b7dab5ee2.png)
 
