@@ -55,22 +55,32 @@ Además seguimos los siguientes lineamientos.
 docker-compose --profile db_terceros up
 docker-compose --profile db_ordenes up
 docker-compose --profile db_pedidos up
+docker-compose --profile db_saga up
 ```
 
 
 4. Construcción de imagen del docker compose
 
 ```
-sudo docker build . -f terceros.Dockerfile -t bodegas
+sudo docker build . -f tercerosasyn.Dockerfile -t tercerosasyn
+sudo docker build . -f saga.Dockerfile -t saga
 ```
 
 
 
 5. Iniciar servicios 
 ```
-docker-compose --profile bodegas up
+docker-compose --profile tercerosasyn up
+docker-compose --profile saga up
+
+
+Instalar requirements fuera del docker
+pip install -r requirementsTerceros.txt 
+
+Ejecutar servicios API fuera de docker
 flask --app entregasalpes/api/ordenes --debug run
 flask --app entregasalpes/api/pedidos --debug run
+uvicorn bff_web.main:app --host localhost --port 8008
 ```
 
 
