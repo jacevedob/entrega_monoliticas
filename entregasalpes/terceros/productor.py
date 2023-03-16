@@ -1,7 +1,4 @@
-import pulsar
-import os
-from dotenv import load_dotenv
-from pulsar import ConsumerType
+c
 
 def send_topic(topic):
     load_dotenv()

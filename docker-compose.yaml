@@ -83,3 +83,25 @@ services:
       - DATABASE = 'terceros'
     networks:
       - pulsar
+
+#bodegas
+  tercerosasyn:
+    container_name: tercerosasyn
+    hostname: tercerosasyn
+    image: tercerosasyn 
+    profiles: ["tercerosasyn"]
+    environment:
+      - PULSAR_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Nzc4OTAzODQsImlzcyI6ImRhdGFzdGF4Iiwic3ViIjoiY2xpZW50O2RjNTk2NmQxLTgxMWUtNDhjNi1hYTlkLThmYzdjNzI1ZjYyZTtaWGh3WlhKcGJXVnVkRzl6TFcxdmJtOXNhWFJwWTI5ejsxZmIzYWEzOGQ1IiwidG9rZW5pZCI6IjFmYjNhYTM4ZDUifQ.jtRQfeQxyDH1Bp84WSPmtsSpqnl0cZjl2nkigqzIMgy_H-qALSAd-Uci79aaeUhagQYIeuNf5z8WJ2OMoA-Xzk3x3JMw3eAOcnFeE6WEODqgtjHdhlScAgM2WBZYCYM3D9dJMTBxdHGYYmQ8stkk9qpv3z3K-2YySzI_xIUa6pn1Mt4htZ1bTPtPyXCWm6JjFHmgbnHgkgtD2PAW00mnBGjgMc6anJ_ac7qup44khF4bA5-spee-jC6SEqfJ-mQl7uwcVrBrcOh8FXI-KXff91tNsTYWp9jaTCuj1l8RCK6LAAtWKi5NwC33Y-xqjCgdi4PPD_QWy07PWSZr0iWEfA'
+      - PULSAR_URL = 'pulsar+ssl://pulsar-aws-useast2.streaming.datastax.com:6651'
+      - PULSAR_CONSUMER_TERCEROS = 'persistent://experimentos-monoliticos/monoliticas/ordenes'
+      - PULSAR_PRODUCER_TERCEROS = 'persistent://experimentos-monoliticos/monoliticas/eventos-pedidos'
+      - PULSAR_PROD_ORDENES = 'persistent://experimentos-monoliticos/monoliticas/ordenes'
+      - PULSAR_CONSUMER_PEDIDOS = 'persistent://experimentos-monoliticos/monoliticas/eventos-pedidos'
+      - PULSAR_CONSUMER_SAGA = 'persistent://experimentos-monoliticos/monoliticas/saga'
+      - PULSAR_COMPENSACION = 'persistent://experimentos-monoliticos/monoliticas/compensacion'
+      - BODEGAS_ADDRESS = 'mysqldb_terceros'
+      - USER_DB = 'root'
+      - PASSWORD_DB = 'adminadmin'
+      - DATABASE = 'terceros'
+    networks:
+      - pulsar

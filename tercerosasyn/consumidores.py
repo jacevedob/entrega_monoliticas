@@ -4,7 +4,6 @@ import pulsar, _pulsar
 import aiopulsar
 import asyncio
 from pulsar.schema import *
-from . import utils
 from . import ruta
 from . import basedatos
 from . import productor

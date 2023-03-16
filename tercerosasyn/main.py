@@ -11,7 +11,6 @@ from pydantic import BaseSettings
 from typing import Any
 from .consumidores import *
 from .despachadores import Despachador
-from . import utils
 from sse_starlette.sse import EventSourceResponse
 
 class Config(BaseSettings):
