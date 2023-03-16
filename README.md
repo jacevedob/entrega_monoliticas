@@ -13,6 +13,7 @@ Se presenta el diagrama de arquitectura usando el patrón SAGA, BFF, Saga LOG y 
 ![image](https://user-images.githubusercontent.com/78766013/225208923-f02b404f-aeda-40e9-b7b8-923ca8e25c2a.png)
 
 
+
 ### Disponibilidad
 
 ![image](https://user-images.githubusercontent.com/78766013/223620518-609538bb-f69f-479e-93ab-24d639a36716.png)
@@ -85,7 +86,8 @@ uvicorn bff_web.main:app --host localhost --port 8008
 
 
 6. Enviar mensaje para inicio del flujo
-
+ Archivo postman
+https://github.com/jacevedob/entrega_monoliticas/blob/main/Entre%20%235.postman_collection.json
 
 ![image](https://user-images.githubusercontent.com/78766013/223618174-95d220dc-e5f1-4ac0-8671-a68b7dab5ee2.png)
 
