@@ -1,0 +1,8 @@
+from pydispatch import dispatcher
+
+from .handlers import HandlerUnificacionPedidosIntegracion
+
+from entregasalpes.modulos.unificacion_pedidos.dominio.eventos import UnificacionPedidosCreada, UnificacionPedidosCancelada
+
+dispatcher.connect(HandlerUnificacionPedidosIntegracion.handle_unificacion_pedidos_creada, signal=f'{UnificacionPedidosCreada.__name__}Integracion')
+dispatcher.connect(HandlerUnificacionPedidosIntegracion.handle_unificacion_pedidos_cancelada, signal=f'{UnificacionPedidosCancelada.__name__}Integracion')

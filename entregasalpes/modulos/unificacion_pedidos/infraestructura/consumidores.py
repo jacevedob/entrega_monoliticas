@@ -6,12 +6,15 @@ import logging
 import traceback
 import datetime
 import os
+import json
 from dotenv import load_dotenv
 from pulsar import ConsumerType
+import ast
 
 from entregasalpes.modulos.unificacion_pedidos.infraestructura.schema.v1.eventos import EventoUnificacionPedidosCreada
 from entregasalpes.modulos.unificacion_pedidos.infraestructura.schema.v1.comandos import ComandoCrearUnificacionPedidos
-
+from entregasalpes.modulos.unificacion_pedidos.infraestructura.ejecutadores import registra_unificacion_pedidos
+from entregasalpes.modulos.unificacion_pedidos.aplicacion.dto import UnificacionPedidosDTO
 
 from entregasalpes.seedwork.infraestructura.proyecciones import ejecutar_proyeccion
 from entregasalpes.seedwork.infraestructura import utils
@@ -27,25 +30,40 @@ def suscribirse_a_eventos(app=None):
         client = pulsar.Client(service_url, authentication=pulsar.AuthenticationToken(token))
         consumidor = client.subscribe(pulsar_consumer, 'pedidos-subscription-consumer', ConsumerType.Shared)
         #cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        #consumidor = cliente.subscribe('eventos-pedidos', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='entregasalpes-sub-eventos', schema=AvroSchema(EventoUnificacionPedidosCreada))
+        #consumidor = cliente.subscribe(pulsar_consumer,  'pedidos-subscription-consumer', consumer_type=_pulsar.ConsumerType.Shared)
 
         while True:
             mensaje = consumidor.receive()
             datos = mensaje.data()
-            print(f'Evento recibido: {datos}')
-
-            # TODO Identificar el tipo de CRUD del evento: Creacion, actualización o eliminación.
-            #ejecutar_proyeccion(ProyeccionReservasTotales(datos.fecha_creacion, ProyeccionReservasTotales.ADD), app=app)
-            #ejecutar_proyeccion(ProyeccionReservasLista(datos.id_reserva, datos.id_cliente, datos.estado, datos.fecha_creacion, datos.fecha_creacion), app=app)
+            print(f'Evento recibido Topico Pedidos: {datos}')
+            eldato = str(datos)
+            mensaje2 =  eldato[1:]
             
-            consumidor.acknowledge(mensaje)     
+           
+            entrada = str('{"id":"53", "direccion_recogida":"882 AmberPinesLakeJulie MI37734" , "direccion_entrega":"ManuelStreamAptFL93980", "fecha_recogida":"1998-07-07" , "fecha_entrega":"2023-02-10" , "estado":"true", "productos": [{ "serial": "4455", "descripcion": "132", "precio": "15002", "fecha_vencimiento": "2023-12-2", "tipo_producto": "tipo" } , { "serial": "4450",	"descripcion": "132", "precio": "15002", "fecha_vencimiento": "2023-12-2", "tipo_producto": "tipo"}]}')
+            #entrada = str('{"id":"53", "direccion_recogida":"882 AmberPinesLakeJulie MI37734" , "direccion_entrega":"ManuelStreamAptFL93980", "fecha_recogida":"1998-07-07" , "fecha_entrega":"2023-02-10" , "estado":"true"}') 
+            diccionario = json.loads(entrada)
 
+            print('llego al externo_a_dto222222222222........................................',diccionario)
+            unificacion_dto = externo_a_dto(diccionario)
+            registra_unificacion_pedidos(unificacion_dto)
+            consumidor.acknowledge(mensaje)
         cliente.close()
     except:
         logging.error('ERROR: Suscribiendose al tópico de eventos!')
         traceback.print_exc()
         if cliente:
             cliente.close()
+
+
+def externo_a_dto(externo: dict) -> UnificacionPedidosDTO:
+        print('llego al mapeador.............................................')
+        unificacion_pedidos_dto = UnificacionPedidosDTO()
+        productos: list[ProductoDTO] = list()
+        for producto in externo.get('productos', list()):
+            unificacion_pedidos_dto.productos.append(producto)
+
+        return unificacion_pedidos_dto            
 
 def suscribirse_a_comandos(app=None):
     cliente = None

@@ -5,4 +5,4 @@ RUN pip install --no-cache-dir -r terceros-requirements.txt
 
 COPY . .
 
-CMD [ "python", "./entregasalpes/terceros/main.py" ]
+CMD [ "python", "./entregasalpes/coordinador_saga/main.py" ]

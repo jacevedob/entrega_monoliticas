@@ -1,9 +1,18 @@
-# Entrega #4
-A continuación presentamos la entrega parcial o Entrega #4.
 
-En esta entrega presentamos 3 microservicios con comunicación asincrona ( comandos y eventos) usando Apache Pulsar y usando un modelo clásico **CRUD**  para las bases de datos. 
+# Entrega #4 y #5
+A continuación presentamos la entrega final en conjunto con la entrega anterior.
+
+
+En esta entrega presentamos 5 microservicios con comunicación asincrona ( comandos y eventos) usando Apache Pulsar y usando un modelo clásico **CRUD**  para las bases de datos 3 Microservicios del dominio de negocio ( orden, terceros, pedidos) 1 Microservicio como Backend for front end y 1 Microservicio como coordinador del Saga . 
 
 El proposito de este es que los ingenieros puedan apreciar una prueba de concepto de la arquitectura solución para el proyecto Entrega Alpes, por medio de la validación de 3 escenarios de calidad para cada atributo de calidad en este caso ( Disponibilidad, Interoperabilidad, Escalabilidad).
+
+
+Se presenta el diagrama de arquitectura usando el patrón SAGA, BFF, Saga LOG y compensación
+
+![image](https://user-images.githubusercontent.com/78766013/225208923-f02b404f-aeda-40e9-b7b8-923ca8e25c2a.png)
+
+
 
 ### Disponibilidad
 
@@ -47,27 +56,38 @@ Además seguimos los siguientes lineamientos.
 docker-compose --profile db_terceros up
 docker-compose --profile db_ordenes up
 docker-compose --profile db_pedidos up
+docker-compose --profile db_saga up
 ```
 
 
 4. Construcción de imagen del docker compose
 
 ```
-sudo docker build . -f terceros.Dockerfile -t bodegas
+sudo docker build . -f tercerosasyn.Dockerfile -t tercerosasyn
+sudo docker build . -f saga.Dockerfile -t saga
 ```
 
 
 
 5. Iniciar servicios 
 ```
-docker-compose --profile bodegas up
+docker-compose --profile tercerosasyn up
+docker-compose --profile saga up
+
+
+Instalar requirements fuera del docker
+pip install -r requirementsTerceros.txt 
+
+Ejecutar servicios API fuera de docker
 flask --app entregasalpes/api/ordenes --debug run
 flask --app entregasalpes/api/pedidos --debug run
+uvicorn bff_web.main:app --host localhost --port 8008
 ```
 
 
 6. Enviar mensaje para inicio del flujo
-
+ Archivo postman
+https://github.com/jacevedob/entrega_monoliticas/blob/main/Entre%20%235.postman_collection.json
 
 ![image](https://user-images.githubusercontent.com/78766013/223618174-95d220dc-e5f1-4ac0-8671-a68b7dab5ee2.png)
 
