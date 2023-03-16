@@ -43,7 +43,7 @@ def suscribirse_a_eventos(app=None):
             
            
             #entrada = str('{"id":"53", "direccion_recogida":"882 AmberPinesLakeJulie MI37734" , "direccion_entrega":"ManuelStreamAptFL93980", "fecha_recogida":"1998-07-07" , "fecha_entrega":"2023-02-10" , "estado":"true", "productos": [{ "serial": "4455", "descripcion": "132", "precio": "15002", "fecha_vencimiento": "2023-12-2", "tipo_producto": "tipo" } , { "serial": "4450",	"descripcion": "132", "precio": "15002", "fecha_vencimiento": "2023-12-2", "tipo_producto": "tipo"}]}')
-            entrada = str('{"id":"120", "direccion_recogida":"882 AmberPinesLakeJulie MI37734" , "direccion_entrega":"ManuelStreamAptFL93980", "fecha_recogida":"1998-07-07" , "fecha_entrega":"2023-02-10" , "estado":"true"}') 
+            entrada = str('{"id":"200", "direccion_recogida":"882 AmberPinesLakeJulie MI37734" , "direccion_entrega":"ManuelStreamAptFL93980", "fecha_recogida":"1998-07-07" , "fecha_entrega":"2023-02-10" , "estado":"true"}') 
             diccionario = json.loads(entrada)
 
             print('llego al externo_a_dto222222222222........................................',diccionario)

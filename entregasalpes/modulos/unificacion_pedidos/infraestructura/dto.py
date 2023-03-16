@@ -17,6 +17,7 @@ class Producto(db.Model):
     descripcion = db.Column(db.String(100),  nullable=False, primary_key=True)
     precio = db.Column(db.Integer, nullable=False, primary_key=True)
     fecha_vencimiento = db.Column(db.String(10), nullable=False, primary_key=True)
+    __table_args__ = {'extend_existing': True}
 
 class UnificacionPedidos(db.Model):
     __tablename__ = "unificacion_pedidos"

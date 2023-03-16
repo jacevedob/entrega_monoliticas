@@ -11,7 +11,7 @@ database = os.getenv('DATABASE')
 def insert_db(source, status, id):
   try:
     mydb = mysql.connector.connect(
-      host = 'mysqldb_saga',
+      host = 'localhost',
       user = user,
       password = password,
       database = 'saga',

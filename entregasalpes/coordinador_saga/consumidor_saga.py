@@ -13,6 +13,7 @@ consumer = client.subscribe(pulsar_consumer, 'saga-subscription-consumer', Consu
 while True:
     mensaje = consumer.receive()
     datos = mensaje.data()
+    print({datos})
     print(f'Evento recibido SAGA: {datos}')
     consumer.acknowledge(mensaje)
 
