@@ -1,0 +1,38 @@
+{
+	"info": {
+		"_postman_id": "04aff00e-3d43-4e8b-98eb-c596211806f0",
+		"name": "Entre #5",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5687446"
+	},
+	"item": [
+		{
+			"name": "Orden request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n\"id_cliente\":\"132\",\r\n\"id\":\"158\",\r\n\"fecha_creacion\":\"12/12/2023\",\r\n \"productos\":[{\r\n  \"serial\":\"3\",\r\n  \"descripcion\":\"132\",\r\n  \"precio\":\"15002\",\r\n  \"fecha_vencimiento\":\"2023-12-2\",\r\n  \"tipo_producto\":\"tipo\"},{\r\n  \"serial\":\"3\",\r\n  \"descripcion\":\"132\",\r\n  \"precio\":\"15002\",\r\n  \"fecha_vencimiento\":\"2023-12-2\",\r\n  \"tipo_producto\":\"tipo\"}]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/compra/ordenes",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"compra",
+						"ordenes"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
